@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Clubs Council | Official Recruitment Portal</title>
+    <meta name="description"
+        content="Official Recruitment Portal for CSE Clubs Council. Join official student clubs and apply for leadership roles.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Premium Ambient Lighting -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Top Reading Progress Indicator -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand">
+                <div class="brand-logo">
+                    <img src="images/Vel_Logo.png" alt="Vel Tech University logo">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">CSE CLUBS COUNCIL</span>
+                    <span class="brand-subtitle">VEL TECH UNIVERSITY</span>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <a href="#contactSection" class="nav-link">Contact</a>
+                <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank" class="whatsapp-nav-btn"
+                    title="Join Official WhatsApp Channel">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z" />
+                    </svg>
+                    <span>WhatsApp Channel</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="sparkle">✦</span> OFFICIAL RECRUITMENT PORTAL 2026-27
+            </div>
+            <h1 class="hero-title">
+                CSE Clubs Council <br>
+                <span class="gradient-text">Recruitment Portal</span>
+            </h1>
+            <div class="hero-tagline">
+                <span class="tag-word">Lead.</span>
+                <span class="tag-word">Innovate.</span>
+                <span class="tag-word">Inspire.</span>
+            </div>
+            <p class="hero-subtitle">
+                Join our official student clubs or step up into council leadership. Elevate your technical craft,
+                organize flagship events, and build a world-class portfolio.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="#dashboard" class="btn btn-primary" id="heroApplyBtn">
+                    <span>Explore Clubs & Apply</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank"
+                    class="btn btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z" />
+                    </svg>
+                    <span>Join Channel</span>
+                </a>
+            </div>
+
+            <!-- Live Registration Timer Card -->
+            <div class="registration-timer-card glass-card" id="timerCard">
+                <div class="timer-header">
+                    <!-- <span class="timer-icon">⏳</span> -->
+                    <span class="timer-title" id="timerTitle">Registration Closes In</span>
+                </div>
+                <div class="timer-grid" id="timerGrid">
+                    <div class="timer-box">
+                        <span class="timer-number" id="timerDays">00</span>
+                        <span class="timer-label">Days</span>
+                    </div>
+                    <div class="timer-separator">:</div>
+                    <div class="timer-box">
+                        <span class="timer-number" id="timerHours">00</span>
+                        <span class="timer-label">Hours</span>
+                    </div>
+                    <div class="timer-separator">:</div>
+                    <div class="timer-box">
+                        <span class="timer-number" id="timerMinutes">00</span>
+                        <span class="timer-label">Minutes</span>
+                    </div>
+                    <div class="timer-separator">:</div>
+                    <div class="timer-box">
+                        <span class="timer-number" id="timerSeconds">00</span>
+                        <span class="timer-label">Seconds</span>
+                    </div>
+                </div>
+                <div class="timer-closed-message hidden" id="closedMessage">
+                    🔒 Registrations are currently closed. Follow our WhatsApp channel for updates.
+                </div>
+            </div>
+        </div>
+
+        <a href="#dashboard" class="scroll-indicator" aria-label="Scroll to dashboard">
+            <span class="mouse">
+                <span class="wheel"></span>
+            </span>
+            <span class="scroll-text">View Clubs</span>
+        </a>
+    </section>
+
+    <!-- Main Dashboard Section -->
+    <main class="main-dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <div class="section-title-wrap">
+                <span class="section-badge">OPPORTUNITIES</span>
+                <h2 class="section-title">Explore Clubs & Council Roles</h2>
+                <p class="section-desc">Select your desired club or council leadership position to open your official
+                    application.</p>
+            </div>
+
+            <!-- Controls -->
+            <!-- <div class="controls-bar glass-card">
+                <div class="filter-tabs">
+                    <button class="tab-btn active" data-filter="all">All Opportunities</button>
+                    <button class="tab-btn" data-filter="clubs">Club Applications</button>
+                    <button class="tab-btn" data-filter="leadership">Leadership Roles</button>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- SECTION 1 (HIGH PRIORITY): Club Applications -->
+        <section class="roles-section" id="clubsSection">
+            <div class="category-header">
+                <div class="category-title-wrap">
+                    <h3 class="category-title">Club Applications</h3>
+                </div>
+                <span class="category-badge">Open for All Students (1st - 4th Year)</span>
+            </div>
+
+            <div class="cards-grid" id="clubsGrid">
+                <!-- Club Cards Rendered Dynamically -->
+            </div>
+
+
+        </section>
+
+        <!-- SECTION 2: Leadership Roles -->
+        <section class="roles-section" id="leadershipSection">
+            <div class="category-header">
+                <div class="category-title-wrap">
+                    <h3 class="category-title">Council Leadership Roles</h3>
+                </div>
+                <span class="category-badge">2nd & 3rd Year Students Only</span>
+            </div>
+
+            <div class="cards-grid" id="leadershipGrid">
+                <!-- Leadership Cards Rendered Dynamically -->
+            </div>
+
+            <div class="exception-note glass-card">
+                <p><strong>Note:</strong> 4th year students are excluded from applying for Council Leadership and Club
+                    Leadership roles due to
+                    placement and other academic commitments. If you really think you deserve a spot, <a href="#"
+                        id="openFourthYearBtn">Submit your exception request here.</a></p>
+            </div>
+        </section>
+        <!-- WhatsApp Join Banner Promo -->
+        <!-- <div class="whatsapp-promo-banner glass-card">
+            <div class="wa-promo-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z" />
+                </svg>
+            </div>
+            <div class="wa-promo-content">
+                <h4>Join the Official WhatsApp Channel</h4>
+                <p>Interview calls, shortlisting lists, and orientation dates will be announced exclusively on the
+                    channel.</p>
+            </div>
+            <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank" class="btn btn-whatsapp">
+                Join Channel Now
+            </a>
+        </div> -->
+    </main>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contactSection">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <h3 style="font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: -0.02em;">Have a Query?</h3>
+            <p style="color: var(--text-secondary); font-size: 1rem;">Drop your questions below and we will get back to
+                you.</p>
+        </div>
+
+        <div class="glass-card contact-card">
+            <form id="contactForm" class="application-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="contactName">Name <span class="required">*</span></label>
+                        <input type="text" id="contactName" placeholder="Your Full Name" required>
+                        <span class="field-error" id="contactNameError">Name is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactVtu">VTU No. <span class="required">*</span></label>
+                        <input type="text" id="contactVtu" placeholder="e.g. 24996" inputmode="numeric" maxlength="5"
+                            pattern="[0-9]{5}" required>
+                        <span class="field-error" id="contactVtuError">Enter a valid 5-digit VTU No.</span>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="contactYear">Year <span class="required">*</span></label>
+                        <select id="contactYear" required>
+                            <option value="">Select Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="contactQuery">Your Query <span class="required">*</span></label>
+                        <textarea id="contactQuery" rows="4" placeholder="Type your question or issue here..." required
+                            minlength="10" maxlength="500"></textarea>
+                        <span class="field-error" id="contactQueryError">Please provide a valid query (min 10
+                            chars).</span>
+                    </div>
+                </div>
+
+                <div class="form-footer" style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary submit-btn" id="contactSubmitBtn" disabled>
+                        <span>Submit Query</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="brand-title">CSE CLUBS COUNCIL</div>
+                <p>Department of Computer Science & Engineering</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank">WhatsApp Channel</a>
+                <a href="#dashboard">Browse Opportunities</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 CSE Clubs Council. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </button>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- MANDATORY RULES POPUP MODAL -->
+    <div class="modal-overlay" id="rulesModal">
+        <div class="modal-card glass-modal rules-modal-card">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <h3>Important Recruitment Instructions</h3>
+                </div>
+            </div>
+            <div class="modal-body rules-modal-body">
+                <p class="rules-intro">Please read and acknowledge the mandatory instructions before continuing:</p>
+                <ol class="rules-list">
+                    <li>Leadership positions are only open for <strong>2nd and 3rd Year</strong> students.</li>
+                    <li><strong>4th Year students are NOT eligible</strong> for leadership positions.</li>
+                    <li>Club Member positions are open for all students.</li>
+                    <li>Applicants should possess at least one of the following:
+                        <ul class="sub-list">
+                            <li>Technical Skills</li>
+                            <li>Leadership</li>
+                            <li>Creativity</li>
+                            <li>Responsibility</li>
+                            <li>Genuine Interest</li>
+                        </ul>
+                    </li>
+                    <li>Club Heads are expected to conduct meetings and organize events.</li>
+                    <li>Vice Heads assist Club Heads.</li>
+                    <li>Members are expected to actively participate.</li>
+                    <li>Filling this application does not guarantee selection.</li>
+
+                    <li>Inactive students may be removed from clubs.</li>
+                    <li>Decisions made by the CSE Clubs Council are final.</li>
+                </ol>
+            </div>
+            <div class="modal-footer rules-modal-footer">
+                <label class="checkbox-container flex-checkbox">
+                    <input type="checkbox" id="acceptRulesCheckbox">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">I have read and understood all instructions.</span>
+                </label>
+                <button class="btn btn-primary" id="continueRulesBtn" disabled>
+                    <span>Continue to Portal</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION FORM MODAL -->
+    <div class="modal-overlay hidden" id="appModal">
+        <div class="modal-card glass-modal app-modal-card">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <h3 id="formModalTitle">Application Form</h3>
+                </div>
+                <button class="close-modal-btn" id="closeAppModalBtn">&times;</button>
+            </div>
+
+            <div class="modal-body app-modal-body">
+                <!-- Leadership Form -->
+                <form id="leadershipForm" class="app-form hidden" novalidate>
+                    <input type="hidden" id="leadPositionApplied" name="positionApplied">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="leadVtu">VTU No. <span class="required">*</span></label>
+                            <input type="text" id="leadVtu" placeholder="e.g. 24996" inputmode="numeric" maxlength="5"
+                                pattern="[0-9]{5}" required>
+                            <span class="field-error" id="leadVtuError">Enter a valid 5-digit VTU No.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leadFullName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="leadFullName" placeholder="Your Full Name" required>
+                            <span class="field-error" id="leadFullNameError">Full name is required</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leadYear">Academic Year <span class="required">*</span></label>
+                            <select id="leadYear" required>
+                                <option value="">Select Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year" disabled>4th Year (Ineligible for Leadership)</option>
+                                <option value="1st Year" disabled>1st Year (Ineligible for Leadership)</option>
+                            </select>
+                            <span class="field-error" id="leadYearError">Leadership roles are strictly for 2nd & 3rd
+                                Year</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leadPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="leadPhone" placeholder="10-digit mobile number" maxlength="10"
+                                required>
+                            <span class="field-error" id="leadPhoneError">Enter 10-digit valid phone number</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadEmail">VTU Mail <span class="required">*</span></label>
+                            <input type="email" id="leadEmail" placeholder="vtu12345@veltech.edu.in" required>
+                            <span class="field-error" id="leadEmailError">Enter a valid VTU mail address</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadSkills">Technical & Leadership Skills <span
+                                    class="required">*</span></label>
+                            <textarea id="leadSkills" rows="3"
+                                placeholder="List your key technical skills, tools, management capabilities..."
+                                maxlength="500" required></textarea>
+                            <div class="char-counter"><span id="leadSkillsCount">0</span>/500</div>
+                            <span class="field-error" id="leadSkillsError">Please describe your skills</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadExperience">Past Leadership / Event Experience <span
+                                    class="required">*</span></label>
+                            <textarea id="leadExperience" rows="3"
+                                placeholder="Detail any previous positions held, hackathons organized, projects managed..."
+                                maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="leadExpCount">0</span>/600</div>
+                            <span class="field-error" id="leadExpError">Please provide your experience</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leadGithub">GitHub Profile URL</label>
+                            <input type="url" id="leadGithub" placeholder="https://github.com/username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leadLinkedin">LinkedIn Profile URL</label>
+                            <input type="url" id="leadLinkedin" placeholder="https://linkedin.com/in/username">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadPortfolio">Portfolio / Project Link</label>
+                            <input type="url" id="leadPortfolio" placeholder="https://yourportfolio.com">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadWhy">Why do you want this role? <span class="required">*</span></label>
+                            <textarea id="leadWhy" rows="3"
+                                placeholder="Explain your motivation and vision for this council position..."
+                                maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="leadWhyCount">0</span>/600</div>
+                            <span class="field-error" id="leadWhyError">This field is required</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadContribute">What can you contribute to the CSE Council? <span
+                                    class="required">*</span></label>
+                            <textarea id="leadContribute" rows="3"
+                                placeholder="Detail specific initiatives, ideas, or improvements you plan to introduce..."
+                                maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="leadContributeCount">0</span>/600</div>
+                            <span class="field-error" id="leadContributeError">This field is required</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="leadAvailability">Availability Commitment <span
+                                    class="required">*</span></label>
+                            <select id="leadAvailability" required>
+                                <option value="">Select Availability</option>
+                                <option value="Fully Available (Weekdays & Weekends)">Fully Available (Weekdays &
+                                    Weekends)</option>
+                                <option value="Available on Event Days & After Classes">Available on Event Days & After
+                                    Classes</option>
+                                <option value="Weekends Only">Weekends Only</option>
+                            </select>
+                            <span class="field-error" id="leadAvailError">Please select availability</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leadMentorName">Mentor Name <span class="required">*</span></label>
+                            <input type="text" id="leadMentorName" placeholder="Name of your mentor / advisor" required>
+                            <span class="field-error" id="leadMentorNameError">Mentor name is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="leadMentorPhone">Mentor Contact Number <span class="required">*</span></label>
+                            <input type="tel" id="leadMentorPhone" placeholder="10-digit contact number" maxlength="10"
+                                required>
+                            <span class="field-error" id="leadMentorPhoneError">Enter 10-digit valid phone number</span>
+                        </div>
+                    </div>
+
+                    <div class="wa-channel-box">
+                        <span class="wa-icon">💬</span>
+                        <div class="wa-text">
+                            <strong>Official WhatsApp Channel</strong>
+                            <p>Candidates must join the official WhatsApp Channel for interview calls & updates.</p>
+                        </div>
+                        <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank"
+                            class="wa-link-btn">Join WhatsApp Channel</a>
+                    </div>
+
+                    <div class="form-footer">
+                        <label class="checkbox-container flex-checkbox">
+                            <input type="checkbox" id="leadDeclaration" required>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">I declare that all details provided are accurate to the best of
+                                my knowledge.</span>
+                        </label>
+                        <span class="field-error" id="leadDecError">You must accept declaration</span>
+
+                        <button type="submit" class="btn btn-primary btn-submit full-width" id="leadSubmitBtn" disabled>
+                            <span>Submit Leadership Application</span>
+                            <span class="spinner hidden"></span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Club Application Form -->
+                <form id="clubForm" class="app-form hidden" novalidate>
+                    <input type="hidden" id="clubNameAuto" name="clubName">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="clubVtu">VTU No. <span class="required">*</span></label>
+                            <input type="text" id="clubVtu" placeholder="e.g. 24996" inputmode="numeric" maxlength="5"
+                                pattern="[0-9]{5}" required>
+                            <span class="field-error" id="clubVtuError">Enter a valid 5-digit VTU No.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="clubFullName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="clubFullName" placeholder="Your Full Name" required>
+                            <span class="field-error" id="clubFullNameError">Full name is required</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="clubApplyingAs">Applying As Position <span class="required">*</span></label>
+                            <select id="clubApplyingAs" required>
+                                <option value="">Select Position</option>
+                                <option value="Member">Club Member (Open to All)</option>
+                                <option value="Club Head">Club Head (2nd/3rd Year Only)</option>
+                                <option value="Vice Head">Vice Head (2nd/3rd Year Only)</option>
+                            </select>
+                            <span class="field-error" id="clubApplyingAsError">Select applying role</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="clubYear">Academic Year <span class="required">*</span></label>
+                            <select id="clubYear" required>
+                                <option value="">Select Year</option>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                            </select>
+                            <span class="field-error" id="clubYearError">Academic year is required</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="clubPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="clubPhone" placeholder="10-digit mobile number" maxlength="10"
+                                required>
+                            <span class="field-error" id="clubPhoneError">Enter 10-digit valid phone number</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="clubEmail">VTU Mail <span class="required">*</span></label>
+                            <input type="email" id="clubEmail" placeholder="vtu12345@veltech.edu.in" required>
+                            <span class="field-error" id="clubEmailError">Enter a valid VTU mail address</span>
+                        </div>
+
+                        <div class="form-group full-width club-leadership-only">
+                            <label for="clubSkills">Skills & Domain Knowledge <span class="required">*</span></label>
+                            <textarea id="clubSkills" rows="3"
+                                placeholder="Programming languages, design tools, domain skills relevant to this club..."
+                                maxlength="500" required></textarea>
+                            <div class="char-counter"><span id="clubSkillsCount">0</span>/500</div>
+                            <span class="field-error" id="clubSkillsError">Describe your skills</span>
+                        </div>
+
+                        <div class="form-group full-width club-leadership-only">
+                            <label for="clubExperience">Relevant Experience / Projects <span
+                                    class="required">*</span></label>
+                            <textarea id="clubExperience" rows="3"
+                                placeholder="Share any relevant projects, hackathons, workshops, or past club experience..."
+                                maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="clubExpCount">0</span>/600</div>
+                            <span class="field-error" id="clubExpError">Describe relevant experience</span>
+                        </div>
+
+                        <div class="form-group full-width club-leadership-only">
+                            <label for="clubWhy">Why do you want to join this club? <span
+                                    class="required">*</span></label>
+                            <textarea id="clubWhy" rows="3"
+                                placeholder="Tell us why this specific club aligns with your interests and goals..."
+                                maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="clubWhyCount">0</span>/600</div>
+                            <span class="field-error" id="clubWhyError">Please explain your motivation</span>
+                        </div>
+
+                        <div class="form-group full-width club-leadership-only">
+                            <label for="clubContribute">What can you contribute to this club? <span
+                                    class="required">*</span></label>
+                            <textarea id="clubContribute" rows="3"
+                                placeholder="Ideas for events, tutorials, designs, technical management..."
+                                maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="clubContributeCount">0</span>/600</div>
+                            <span class="field-error" id="clubContributeError">Describe your contributions</span>
+                        </div>
+
+                        <div class="form-group club-leadership-only">
+                            <label for="clubGithub">GitHub Link</label>
+                            <input type="url" id="clubGithub" placeholder="https://github.com/username">
+                        </div>
+
+                        <div class="form-group club-leadership-only">
+                            <label for="clubLinkedin">LinkedIn Profile</label>
+                            <input type="url" id="clubLinkedin" placeholder="https://linkedin.com/in/username">
+                        </div>
+
+                        <div class="form-group full-width club-leadership-only">
+                            <label for="clubPortfolio">Portfolio / Link</label>
+                            <input type="url" id="clubPortfolio" placeholder="https://yourportfolio.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="clubMentorName">Mentor Name <span class="required">*</span></label>
+                            <input type="text" id="clubMentorName" placeholder="Name of your mentor / advisor" required>
+                            <span class="field-error" id="clubMentorNameError">Mentor name is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="clubMentorPhone">Mentor Contact Number <span class="required">*</span></label>
+                            <input type="tel" id="clubMentorPhone" placeholder="10-digit contact number" maxlength="10"
+                                required>
+                            <span class="field-error" id="clubMentorPhoneError">Enter 10-digit valid phone number</span>
+                        </div>
+                    </div>
+
+                    <div class="wa-channel-box">
+                        <span class="wa-icon">💬</span>
+                        <div class="wa-text">
+                            <strong>Official Communication Channel</strong>
+                            <p>Join the WhatsApp Channel to stay updated on orientation dates & announcements.</p>
+                        </div>
+                        <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank"
+                            class="wa-link-btn">Join Channel</a>
+                    </div>
+
+                    <div class="form-footer">
+                        <label class="checkbox-container flex-checkbox">
+                            <input type="checkbox" id="clubDeclaration" required>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">I declare that all details provided are accurate to the best of
+                                my knowledge.</span>
+                        </label>
+                        <span class="field-error" id="clubDecError">You must accept declaration</span>
+
+                        <button type="submit" class="btn btn-primary btn-submit full-width" id="clubSubmitBtn" disabled>
+                            <span>Submit Club Application</span>
+                            <span class="spinner hidden"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS SCREEN MODAL -->
+    <div class="modal-overlay hidden" id="successModal">
+        <div class="modal-card glass-modal success-modal-card">
+            <div class="success-icon-wrap">
+                <div class="success-circle">
+                    <svg class="checkmark-svg" viewBox="0 0 52 52">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="23" fill="none" />
+                        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                    </svg>
+                </div>
+            </div>
+
+            <h3 class="success-title">Application Submitted Successfully!</h3>
+            <p class="success-desc">
+                Thank you for applying. Your response has been securely logged into the CSE Council database.
+            </p>
+            <p class="success-note">Shortlisted candidates will be contacted directly for interview rounds.</p>
+
+            <div class="success-wa-card glass-card">
+                <div class="wa-card-header">
+                    <span class="wa-badge">MANDATORY STEP</span>
+                    <h4>Join the CSE Council WhatsApp Channel</h4>
+                </div>
+                <p>Receiving interview calls and selection announcements requires joining the channel:</p>
+                <a href="https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V" target="_blank"
+                    class="btn btn-whatsapp full-width">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.157 4.228 4.305-1.129z" />
+                    </svg>
+                    <span>Click to Join WhatsApp Channel</span>
+                </a>
+            </div>
+
+            <div class="success-actions">
+                <button class="btn btn-secondary full-width" id="closeSuccessBtn">Return to Portal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLUB DETAILS MODAL -->
+    <div class="modal-overlay hidden" id="clubDetailsModal" role="dialog" aria-modal="true"
+        aria-labelledby="clubDetailsTitle">
+        <div class="modal-card glass-modal club-details-modal-card">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <h3 id="clubDetailsTitle">Club Details</h3>
+                </div>
+                <button class="close-modal-btn" id="closeClubDetailsBtn"
+                    aria-label="Close club details">&times;</button>
+            </div>
+            <div class="modal-body club-details-body">
+                <span class="club-details-category" id="clubDetailsCategory"></span>
+                <div id="clubDetailsDescription" class="modal-details-content"></div>
+
+                <div id="leadershipCommitmentNote" class="expected-commitment-box hidden">
+                    <h5>Expected Commitment</h5>
+                    <ul>
+                        <li>Minimum one academic year of active participation.</li>
+                        <li>Attend all Executive Council meetings.</li>
+                        <li>Meet deadlines and coordinate effectively with Club Heads.</li>
+                        <li>Represent the CSE Clubs Council professionally.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeClubDetailsFooterBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4TH YEAR EXCEPTION MODAL -->
+    <div class="modal-overlay hidden" id="fourthYearModal" role="dialog" aria-modal="true"
+        aria-labelledby="fourthYearModalTitle">
+        <div class="modal-card glass-modal">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <span class="modal-icon">⭐</span>
+                    <h3 id="fourthYearModalTitle">4th Year Exception Application</h3>
+                </div>
+                <button class="close-modal-btn" id="closeFourthYearModalBtn" aria-label="Close form">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="fourthYearForm" class="application-form">
+                    <p class="form-instructions">Please provide your details and justify why you should be considered
+                        for a council role despite 4th-year commitments.</p>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="fyApplicationType">Application Type <span class="required">*</span></label>
+                            <select id="fyApplicationType" required>
+                                <option value="">Select Type</option>
+                                <option value="Council Leadership">Council Leadership</option>
+                                <option value="Club Leadership">Club Leadership</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width hidden" id="fyClubNameContainer">
+                            <label for="fyClubName">Club Name <span class="required">*</span></label>
+                            <select id="fyClubName">
+                                <option value="">Select Club</option>
+                                <!-- Populated dynamically by script.js -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fyVtu">VTU No. <span class="required">*</span></label>
+                            <input type="text" id="fyVtu" placeholder="e.g. 24996" inputmode="numeric" maxlength="5"
+                                pattern="[0-9]{5}" required>
+                            <span class="field-error" id="fyVtuError">Enter a valid 5-digit VTU No.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fyFullName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="fyFullName" placeholder="Your Full Name" required>
+                            <span class="field-error" id="fyFullNameError">Full name is required</span>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="fyPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="fyPhone" placeholder="10-digit mobile number" maxlength="10"
+                                pattern="[0-9]{10}" required>
+                            <span class="field-error" id="fyPhoneError">Enter 10-digit valid phone number</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fyEmail">Email ID <span class="required">*</span></label>
+                            <input type="email" id="fyEmail" placeholder="vtu12345@veltech.edu.in" required>
+                            <span class="field-error" id="fyEmailError">Enter a valid email address</span>
+                        </div>
+
+                        <div class="form-group full-width" id="fyPositionContainer">
+                            <label for="fyPosition">Position Interested For <span class="required">*</span></label>
+                            <select id="fyPosition" required disabled>
+                                <option value="">Select Application Type First</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fyMentorName">Mentor Name <span class="required">*</span></label>
+                            <input type="text" id="fyMentorName" placeholder="Name of your mentor / advisor" required>
+                            <span class="field-error" id="fyMentorNameError">Mentor name is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fyMentorPhone">Mentor Contact Number <span class="required">*</span></label>
+                            <input type="tel" id="fyMentorPhone" placeholder="10-digit contact number" maxlength="10"
+                                required>
+                            <span class="field-error" id="fyMentorPhoneError">Enter 10-digit valid phone number</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="fyReason">Why do you deserve a spot? <span class="required">*</span></label>
+                            <textarea id="fyReason" rows="4"
+                                placeholder="Briefly explain your past contributions, your ability to manage time with placements, and why we should make an exception for you."
+                                minlength="50" maxlength="600" required></textarea>
+                            <div class="char-counter"><span id="fyReasonCount">0</span>/600</div>
+                            <span class="field-error" id="fyReasonError">Please provide a valid reason (min 50
+                                chars).</span>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <label class="checkbox-container flex-checkbox">
+                            <input type="checkbox" id="fyDeclaration" required>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">I acknowledge that 4th-year applications are strictly evaluated
+                                as exceptions, and final decisions rest with the HOD and Faculty Advisors.</span>
+                        </label>
+                        <span class="field-error" id="fyDecError" style="margin-top: 5px;">You must agree to the
+                            declaration</span>
+
+                        <div class="submit-wrap">
+                            <button type="submit" class="btn btn-primary submit-btn" id="fySubmitBtn" disabled>
+                                <span>Submit Exception Request</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Application Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
