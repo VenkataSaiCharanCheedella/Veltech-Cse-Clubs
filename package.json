@@ -1,0 +1,26 @@
+{
+  "name": "clubs-reg-form(dup)",
+  "version": "1.0.0",
+  "description": "Official recruitment portal for the **CSE Clubs Council**, featuring a modern dark glassmorphic design system, an executive Admin Panel with real-time analytics, and a serverless backend powered by **Google Apps Script** and **Google Sheets**.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VenkataSaiCharanCheedella/Veltech-Cse-Clubs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VenkataSaiCharanCheedella/Veltech-Cse-Clubs/issues"
+  },
+  "homepage": "https://github.com/VenkataSaiCharanCheedella/Veltech-Cse-Clubs#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "mysql2": "^3.23.2",
+    "sharp": "^0.35.3"
+  }
+}

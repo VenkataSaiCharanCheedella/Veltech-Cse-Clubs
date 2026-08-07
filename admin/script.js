@@ -5,10 +5,10 @@
  */
 
 // --------------------------------------------------------------------------
-// 1. Backend Configuration API URL & Credentials Fallback
-// Paste your Google Apps Script Web App Deployment URL below
+// 1. Backend Configuration API URL
+// Vercel Serverless Endpoint for MySQL Database
 // --------------------------------------------------------------------------
-const API_URL = "https://script.google.com/macros/s/AKfycbzdRehj2G4iW45YUWeR-sIQH_Vm5R8dRNSmbK2zPzidGxH1De-w_BxPVSvCu-cv7IR21g/exec";
+const API_URL = "/api/admin";
 
 const DEFAULT_ADMIN_USER = "admin";
 const DEFAULT_ADMIN_PASS = "ChangeMe123!";

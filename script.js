@@ -6,9 +6,9 @@
 
 // --------------------------------------------------------------------------
 // 1. Backend Configuration API URL
-// Paste your Google Apps Script Web App Deployment URL below
+// Vercel Serverless Endpoint for MySQL Database
 // --------------------------------------------------------------------------
-const API_URL = "https://script.google.com/macros/s/AKfycbzdRehj2G4iW45YUWeR-sIQH_Vm5R8dRNSmbK2zPzidGxH1De-w_BxPVSvCu-cv7IR21g/exec";
+const API_URL = "/api/submit";
 
 // --------------------------------------------------------------------------
 // 2. Data Definitions (5 Leadership Roles & 11 Clubs)
