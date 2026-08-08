@@ -26,7 +26,8 @@ let adminSettings = {
 const ALL_CLUBS_KEYS = [
     'Coding Club', 'Innovation Club', 'CyberSentinel Club', 'Animatrix Club',
     'Magazine Club', 'Fusion & Fashion Club', 'Nature Club', 'Yoga Club',
-    'AspireX Club', 'AppNova Club', 'VelSecure Cybersecurity Club'
+    'AspireX Club', 'AppNova Club', 'VelSecure Cybersecurity Club', 
+    'Short Film & Movie Appreciation Club'
 ];
 
 // --------------------------------------------------------------------------

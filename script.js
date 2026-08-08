@@ -149,6 +149,14 @@ const CLUBS_LIST = [
         desc: 'Advanced vulnerability assessment, cloud security, cryptography, and red-teaming labs.',
         category: 'Security',
         details: 'Promote internet safety and a secure online environment while training members in cyber and information-security skills to protect people from cybercrime.'
+    },
+    {
+        id: 'short-film-club',
+        title: 'Short Film & Movie Appreciation Club',
+        icon: 'SFC',
+        desc: 'Short and documentary film competitions, movie reviews, and cinematic insights.',
+        category: 'Creative',
+        details: 'The film appreciation club trains individuals to review films, Ted Talks, and short films with detailed insight. Members write video reviews and brief cinematic explanations, while organizing film competitions annually.'
     }
 ];
 
@@ -582,6 +590,19 @@ function openApplicationModal(type, title) {
     } else {
         modalTitle.textContent = `Club Application: ${title}`;
         document.getElementById('clubNameAuto').value = title;
+
+        const clubObj = CLUBS_LIST.find(c => c.title === title);
+        const isNonTech = clubObj && ['Wellness', 'Social', 'Cultural', 'Creative', 'Media'].includes(clubObj.category);
+        
+        const skillsEl = document.getElementById('clubSkills');
+        const expEl = document.getElementById('clubExperience');
+        if (isNonTech) {
+            skillsEl.placeholder = "Relevant skills (e.g., event management, communication, design, writing, or domain interests)...";
+            expEl.placeholder = "Share any relevant activities, workshops, volunteering, or past experience...";
+        } else {
+            skillsEl.placeholder = "Programming languages, design tools, domain skills relevant to this club...";
+            expEl.placeholder = "Share any relevant projects, hackathons, workshops, or past club experience...";
+        }
 
         clubForm.classList.remove('hidden');
         leadForm.classList.add('hidden');
