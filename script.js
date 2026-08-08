@@ -186,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initFormValidations();
     initClubDetailsModal();
     initFormSubmissions();
-    initRegistrationStatusAndTimer();
     initBackToTop();
 });
 
@@ -1221,78 +1220,6 @@ document.getElementById('closeSuccessBtn').addEventListener('click', () => {
     document.body.style.overflow = '';
 });
 
-// --------------------------------------------------------------------------
-// 14. Registration Status & Live Countdown Timer
-// --------------------------------------------------------------------------
-async function initRegistrationStatusAndTimer() {
-    let settings = {
-        status: 'OPEN',
-        closeTime: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString() // Default 5 days fallback
-    };
-
-    if (API_URL && API_URL.trim() !== "") {
-        try {
-            const res = await fetch(`${API_URL}?action=getSettings`);
-            const data = await res.json();
-            if (data.status === 'success' && data.settings) {
-                settings.status = data.settings.registration_status || 'OPEN';
-                if (data.settings.registration_close) {
-                    settings.closeTime = data.settings.registration_close;
-                }
-            }
-        } catch (err) {
-            console.error('Failed fetching live registration settings:', err);
-        }
-    }
-
-    applyRegistrationState(settings);
-}
-
-function applyRegistrationState(settings) {
-    const closedMessage = document.getElementById('closedMessage');
-    const timerGrid = document.getElementById('timerGrid');
-
-    if (settings.status === 'CLOSED') {
-        isRegistrationOpen = false;
-        if (timerGrid) timerGrid.classList.add('hidden');
-        if (closedMessage) closedMessage.classList.remove('hidden');
-        return;
-    }
-
-    isRegistrationOpen = true;
-    if (timerGrid) timerGrid.classList.remove('hidden');
-    if (closedMessage) closedMessage.classList.add('hidden');
-
-    startCountdownTimer(new Date(settings.closeTime).getTime());
-}
-
-function startCountdownTimer(targetTimestamp) {
-    if (countdownTimerInterval) clearInterval(countdownTimerInterval);
-
-    function update() {
-        const now = new Date().getTime();
-        const difference = targetTimestamp - now;
-
-        if (difference <= 0) {
-            clearInterval(countdownTimerInterval);
-            applyRegistrationState({ status: 'CLOSED' });
-            return;
-        }
-
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        document.getElementById('timerDays').textContent = String(days).padStart(2, '0');
-        document.getElementById('timerHours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('timerMinutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('timerSeconds').textContent = String(seconds).padStart(2, '0');
-    }
-
-    update();
-    countdownTimerInterval = setInterval(update, 1000);
-}
 
 // --------------------------------------------------------------------------
 // 15. Toast Notification System

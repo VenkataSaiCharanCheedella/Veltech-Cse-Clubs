@@ -151,7 +151,7 @@ function initControlPanelEvents() {
 
 async function updateRegistrationSettings(settingsPayload) {
     adminSettings = { ...adminSettings, ...settingsPayload };
-    updateAdminTimerDisplay();
+    updateAdminStatusDisplay();
 
     if (API_URL && API_URL.trim() !== "") {
         try {
@@ -173,32 +173,11 @@ async function updateRegistrationSettings(settingsPayload) {
     }
 }
 
-function updateAdminTimerDisplay() {
+function updateAdminStatusDisplay() {
     const statusText = adminSettings.registration_status || 'OPEN';
     document.getElementById('metricActiveStatus').textContent = statusText;
     document.getElementById('regStatusToggle').checked = (statusText === 'OPEN');
     document.getElementById('statusToggleLabel').innerHTML = `Status: <strong>${statusText}</strong>`;
-
-    const countdownEl = document.getElementById('adminTimerCountdown');
-    if (statusText === 'CLOSED') {
-        countdownEl.textContent = 'Registrations are Currently CLOSED';
-        return;
-    }
-
-    if (adminSettings.registration_close) {
-        const closeTime = new Date(adminSettings.registration_close).getTime();
-        const now = new Date().getTime();
-        const diff = closeTime - now;
-
-        if (diff <= 0) {
-            countdownEl.textContent = 'Registration Timer Expired (Auto-Closed)';
-        } else {
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            countdownEl.textContent = `Registration closes in ${d} Days ${h} Hours ${m} Minutes`;
-        }
-    }
 }
 
 // --------------------------------------------------------------------------
@@ -214,7 +193,7 @@ async function fetchDashboardData() {
 
             if (settingsRes.status === 'success' && settingsRes.settings) {
                 adminSettings = settingsRes.settings;
-                updateAdminTimerDisplay();
+                updateAdminStatusDisplay();
             }
 
             if (recentRes.status === 'success' && Array.isArray(recentRes.data)) {
@@ -241,7 +220,7 @@ function loadDemoDashboardData() {
         { timestamp: '2026-08-07 12:40', category: 'Leadership', name: 'Sneha Patel', vtu: '1VT21CS099', role: 'Vice President', dept: 'CSE', year: '3rd Year', phone: '9988776655', email: 'sneha@gmail.com', skills: 'Project Mgmt, Public Speaking', exp: 'Class Representative', mentorName: 'Dr. M. S. Suresh', mentorPhone: '9448833224' },
         { timestamp: '2026-08-07 13:10', category: 'Club', name: 'Karthik N', vtu: '1VT22DS033', role: 'AppNova Club', dept: 'DS', year: '2nd Year', phone: '9123456780', email: 'karthik@gmail.com', skills: 'Flutter, Firebase, Kotlin', exp: 'Built 2 PlayStore Apps', mentorName: 'Mr. R. K. Ramesh', mentorPhone: '9448833225' }
     ];
-    updateAdminTimerDisplay();
+    updateAdminStatusDisplay();
 }
 
 function renderMetricsAndAnalytics() {
