@@ -51,14 +51,32 @@ module.exports = async function handler(req, res) {
             if (data.category === 'ContactQuery') {
                 await db.execute(
                     `INSERT INTO contact_queries (name, vtu, year, query) VALUES (?, ?, ?, ?)`,
-                    [data.name, data.vtu, data.year, data.query]
+                    [data.name || null, data.vtu || null, data.year || null, data.query || null]
                 );
                 return res.status(200).json({ status: 'success', message: 'Query submitted successfully' });
             } else {
                 await db.execute(
-                    `INSERT INTO applications (category, positionApplied, name, email, vtu, year, branch, phone, reason) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [data.category, data.positionApplied, data.name, data.email, data.vtu, data.year, data.branch, data.phone, data.reason || '']
+                    `INSERT INTO applications (category, vtu, name, email, phone, year, dept, section, clubName, position, skills, whyJoin, github, linkedin, mentorName, mentorPhone, reason) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        data.category || null, 
+                        data.vtu || null, 
+                        data.name || null, 
+                        data.email || null, 
+                        data.phone || null, 
+                        data.year || null, 
+                        data.dept || null, 
+                        data.section || null, 
+                        data.clubName || null, 
+                        data.position || data.applyingAs || null, 
+                        data.skills || null, 
+                        data.whyJoin || null, 
+                        data.github || null, 
+                        data.linkedin || null, 
+                        data.mentorName || null, 
+                        data.mentorPhone || null, 
+                        data.reason || null
+                    ]
                 );
                 return res.status(200).json({ status: 'success', message: 'Application submitted successfully' });
             }
