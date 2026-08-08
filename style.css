@@ -76,8 +76,9 @@ body {
 }
 
 html, body {
-    max-width: 100vw;
+    width: 100%;
     overflow-x: hidden;
+    position: relative;
 }
 
 /* Custom Scrollbar */
@@ -414,20 +415,18 @@ h1, h2, h3, h4, h5, h6 {
    -------------------------------------------------------------------------- */
 .hero {
     min-height: 95vh;
-    padding: 9.5rem 1.5rem 4rem;
+    padding: 8rem 1rem 4rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     position: relative;
-    width: 100%;
-    overflow-x: hidden;
-    box-sizing: border-box;
 }
 
-.hero-content {
-    max-width: 860px;
+.hero-container {
+    width: 100%;
+    max-width: 800px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -1709,13 +1708,14 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     /* Hero Section */
-    .hero { padding-top: 6rem; padding-bottom: 2.5rem; }
-    .hero-title { font-size: 1.9rem; line-height: 1.25; padding: 0 0.5rem; }
+    .hero { padding: 6rem 1rem 2.5rem 1rem; }
+    .hero-title { font-size: 2rem; line-height: 1.2; }
     .hero-tagline { font-size: 0.95rem; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
-    .hero-subtitle { font-size: 0.95rem; padding: 0 1rem; }
+    .hero-subtitle { font-size: 0.95rem; }
     
-    .hero-cta-group { flex-direction: column; width: 100%; padding: 0 1.5rem; }
-    .btn { width: 100%; justify-content: center; }
+    .hero-actions { display: flex; flex-direction: column; width: 100%; gap: 1.5rem; margin-bottom: 2rem; }
+    .hero-actions .btn { width: 100%; justify-content: center; }
+    .scroll-indicator { display: none; }
     .timer-box { min-width: 55px; padding: 0.5rem; border-radius: var(--radius-sm); }
     .timer-number { font-size: 1.3rem; }
     .timer-label { font-size: 0.65rem; }
