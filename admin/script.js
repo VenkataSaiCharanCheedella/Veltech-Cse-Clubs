@@ -162,13 +162,13 @@ async function updateRegistrationSettings(settingsPayload) {
                     settings: settingsPayload
                 })
             });
-            alert('Registration settings updated in Google Sheets!');
+            alert('Registration settings updated in TiDB!');
         } catch (err) {
             console.error('Error updating settings:', err);
             alert('Failed to update remote settings. Updated locally.');
         }
     } else {
-        alert('Settings updated locally (Connect API_URL to sync Google Sheets).');
+        alert('Settings updated locally (Connect API_URL to sync with TiDB).');
     }
 }
 
@@ -257,8 +257,9 @@ function renderMetricsAndAnalytics() {
     ALL_CLUBS_KEYS.forEach(c => clubCounts[c] = 0);
 
     adminApplicationsList.forEach(app => {
-        if (app.category === 'Club' && app.role) {
-            const matchedKey = ALL_CLUBS_KEYS.find(k => k.toLowerCase().includes(app.role.toLowerCase()) || app.role.toLowerCase().includes(k.toLowerCase()));
+        if (app.category === 'Club' && (app.clubName || app.role)) {
+            const clubOrRole = app.clubName || app.role;
+            const matchedKey = ALL_CLUBS_KEYS.find(k => k.toLowerCase().includes(clubOrRole.toLowerCase()) || clubOrRole.toLowerCase().includes(k.toLowerCase()));
             if (matchedKey) {
                 clubCounts[matchedKey] = (clubCounts[matchedKey] || 0) + 1;
             }
@@ -275,7 +276,16 @@ function renderMetricsAndAnalytics() {
             <div class="club-meter-item">
                 <div class="meter-header">
                     <span>${club}</span>
-                    <span>${count} apps</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span>${count} apps</span>
+                        <button onclick="downloadClubData('${club}')" style="background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center;" title="Download CSV">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="meter-track">
                     <div class="meter-fill" style="width: ${percent}%;"></div>
@@ -331,7 +341,7 @@ function renderRecentApplicationsTable(filterQuery = '') {
         return (
             app.name.toLowerCase().includes(query) ||
             app.vtu.toLowerCase().includes(query) ||
-            app.role.toLowerCase().includes(query) ||
+            (app.role || app.clubName || app.position || '').toLowerCase().includes(query) ||
             app.dept.toLowerCase().includes(query)
         );
     });
@@ -347,7 +357,7 @@ function renderRecentApplicationsTable(filterQuery = '') {
             <td><span class="badge-cat ${app.category}">${app.category}</span></td>
             <td><strong>${app.name}</strong></td>
             <td><code>${app.vtu}</code></td>
-            <td>${app.role}</td>
+            <td>${app.role || app.clubName || app.position || 'N/A'}</td>
             <td>${app.dept} / ${app.year}</td>
             <td>${app.phone}</td>
             <td>
@@ -376,7 +386,7 @@ function openDetailModal(index) {
             <div class="detail-item"><label>Candidate Name</label><span>${app.name}</span></div>
             <div class="detail-item"><label>VTU USN</label><span>${app.vtu}</span></div>
             <div class="detail-item"><label>Category</label><span>${app.category}</span></div>
-            <div class="detail-item"><label>Position / Club</label><span>${app.role}</span></div>
+            <div class="detail-item"><label>Position / Club</label><span>${app.role || app.clubName || app.position || 'N/A'}</span></div>
             <div class="detail-item"><label>Department & Year</label><span>${app.dept} - ${app.year} (Sec ${app.section || 'N/A'})</span></div>
             <div class="detail-item"><label>Phone & Email</label><span>${app.phone}<br>${app.email}</span></div>
             <div class="detail-item"><label>Mentor Name</label><span>${app.mentorName || 'N/A'}</span></div>
@@ -389,8 +399,8 @@ function openDetailModal(index) {
         </div>
 
         <div class="detail-block">
-            <h5>Past Experience & Projects</h5>
-            <p>${app.exp || app.experience || 'N/A'}</p>
+            <h5>Past Experience & Motivation</h5>
+            <p>${app.exp || app.experience || app.whyJoin || app.reason || 'N/A'}</p>
         </div>
 
         <div class="detail-grid">
@@ -423,9 +433,9 @@ function exportToCSV() {
         `"${a.section || ''}"`,
         `"${a.phone || ''}"`,
         `"${a.email || ''}"`,
-        `"${a.role || ''}"`,
+        `"${a.role || a.clubName || a.position || ''}"`,
         `"${(a.skills || '').replace(/"/g, '""')}"`,
-        `"${(a.exp || a.experience || '').replace(/"/g, '""')}"`,
+        `"${(a.exp || a.experience || a.whyJoin || a.reason || '').replace(/"/g, '""')}"`,
         `"${a.mentorName || ''}"`,
         `"${a.mentorPhone || ''}"`
     ]);
@@ -439,3 +449,43 @@ function exportToCSV() {
     link.click();
     document.body.removeChild(link);
 }
+
+window.downloadClubData = function(clubName) {
+    const clubApps = adminApplicationsList.filter(app => {
+        const roleOrClub = app.clubName || app.role || '';
+        return app.category === 'Club' && (roleOrClub.toLowerCase().includes(clubName.toLowerCase()) || clubName.toLowerCase().includes(roleOrClub.toLowerCase()));
+    });
+
+    if (clubApps.length === 0) {
+        alert(`No applications data available for ${clubName}.`);
+        return;
+    }
+
+    const headers = ['Timestamp', 'Category', 'VTU Number', 'Full Name', 'Department', 'Year', 'Section', 'Phone', 'Email', 'Role / Club', 'Skills', 'Experience', 'Mentor Name', 'Mentor Phone'];
+    const rows = clubApps.map(a => [
+        `"${a.timestamp || ''}"`,
+        `"${a.category || ''}"`,
+        `"${a.vtu || ''}"`,
+        `"${a.name || ''}"`,
+        `"${a.dept || ''}"`,
+        `"${a.year || ''}"`,
+        `"${a.section || ''}"`,
+        `"${a.phone || ''}"`,
+        `"${a.email || ''}"`,
+        `"${a.role || a.clubName || a.position || ''}"`,
+        `"${(a.skills || '').replace(/"/g, '""')}"`,
+        `"${(a.exp || a.experience || a.whyJoin || a.reason || '').replace(/"/g, '""')}"`,
+        `"${a.mentorName || ''}"`,
+        `"${a.mentorPhone || ''}"`
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    const safeClubName = clubName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    link.setAttribute('download', `${safeClubName}_applications_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
