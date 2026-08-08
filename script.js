@@ -198,7 +198,10 @@ function initParticles() {
         height = canvas.height = window.innerHeight;
     });
 
-    const particles = Array.from({ length: 40 }, () => ({
+    // Reduce particle count on mobile for massive performance boost
+    const particleCount = window.innerWidth < 768 ? 10 : 40;
+
+    const particles = Array.from({ length: particleCount }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         radius: Math.random() * 1.8 + 0.4,
