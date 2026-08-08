@@ -293,7 +293,7 @@ function initMandatoryRulesModal() {
             rulesModal.style.opacity = '0';
             setTimeout(() => {
                 rulesModal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = '';
             }, 300);
             showToast('Recruitment instructions accepted. Welcome!', 'success');
         }
@@ -420,7 +420,7 @@ function openClubDetails(item, isRole = false) {
 
 function closeClubDetails() {
     document.getElementById('clubDetailsModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
 }
 
 // --------------------------------------------------------------------------
@@ -596,7 +596,7 @@ function openApplicationModal(type, title) {
 function closeApplicationModal() {
     const appModal = document.getElementById('appModal');
     appModal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
 }
 
 document.getElementById('closeAppModalBtn').addEventListener('click', closeApplicationModal);
@@ -633,7 +633,7 @@ function openFourthYearModal() {
 function closeFourthYearModal() {
     const modal = document.getElementById('fourthYearModal');
     modal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
 }
 
 document.getElementById('openFourthYearBtn').addEventListener('click', (e) => {
@@ -1197,7 +1197,7 @@ function openSuccessModal() {
 document.getElementById('closeSuccessBtn').addEventListener('click', () => {
     const successModal = document.getElementById('successModal');
     successModal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
 });
 
 // --------------------------------------------------------------------------
