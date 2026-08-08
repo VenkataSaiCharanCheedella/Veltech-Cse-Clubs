@@ -46,6 +46,15 @@ module.exports = async function handler(req, res) {
         const action = body.action;
         const data = body.data;
 
+        // Async dispatch to Google Sheets backup if configured
+        if (process.env.GOOGLE_SCRIPT_URL) {
+            fetch(process.env.GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: action, data: data })
+            }).catch(e => console.error("Failed to forward backup to GSheets:", e));
+        }
+
         if (action === 'submitApplication') {
             const db = getPool();
             if (data.category === 'ContactQuery') {
