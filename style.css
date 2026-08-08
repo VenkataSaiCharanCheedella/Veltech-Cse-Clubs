@@ -421,6 +421,9 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     text-align: center;
     position: relative;
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 .hero-content {
@@ -450,6 +453,8 @@ h1, h2, h3, h4, h5, h6 {
     font-size: clamp(2.6rem, 5.5vw, 4.4rem);
     line-height: 1.08;
     margin-bottom: 1.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .hero-tagline {
