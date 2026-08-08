@@ -1161,13 +1161,13 @@ async function postSubmissionData(payload) {
 
     const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'submitApplication', data: payload })
     });
 
     const result = await response.json();
     if (result.status !== 'success') {
-        throw new Error(result.message || 'Error recording submission in Google Sheets.');
+        throw new Error(result.message || 'Error communicating with database.');
     }
     return result;
 }

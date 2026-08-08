@@ -1,26 +1,36 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-// Create connection pool
-const pool = mysql.createPool({
-    uri: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: true },
-    connectionLimit: 10
-});
+// Create connection pool lazily to avoid crashing on boot if env is missing
+let pool;
+function getPool() {
+    if (!pool) {
+        pool = mysql.createPool({
+            uri: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: true },
+            connectionLimit: 10
+        });
+    }
+    return pool;
+}
 
 module.exports = async function handler(req, res) {
-    // CORS headers for security and API access
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
+    }
+
+    if (req.method === 'GET') {
+        const action = req.query.action;
+        if (action === 'getSettings') {
+            return res.status(200).json({ status: 'success', settings: { registration_status: 'OPEN' } });
+        }
+        return res.status(200).json({ status: 'success', message: 'API is running' });
     }
 
     if (req.method !== 'POST') {
@@ -29,24 +39,23 @@ module.exports = async function handler(req, res) {
 
     try {
         let body = req.body;
-        // In case the frontend sends a stringified payload instead of JSON
         if (typeof body === 'string') {
-            body = JSON.parse(body);
+            try { body = JSON.parse(body); } catch(e){}
         }
 
         const action = body.action;
         const data = body.data;
 
         if (action === 'submitApplication') {
+            const db = getPool();
             if (data.category === 'ContactQuery') {
-                const [result] = await pool.execute(
+                await db.execute(
                     `INSERT INTO contact_queries (name, vtu, year, query) VALUES (?, ?, ?, ?)`,
                     [data.name, data.vtu, data.year, data.query]
                 );
                 return res.status(200).json({ status: 'success', message: 'Query submitted successfully' });
             } else {
-                // Application (Leadership or Club)
-                const [result] = await pool.execute(
+                await db.execute(
                     `INSERT INTO applications (category, positionApplied, name, email, vtu, year, branch, phone, reason) 
                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                     [data.category, data.positionApplied, data.name, data.email, data.vtu, data.year, data.branch, data.phone, data.reason || '']
@@ -56,15 +65,11 @@ module.exports = async function handler(req, res) {
         }
 
         return res.status(400).json({ error: 'Invalid Action' });
-
     } catch (error) {
         console.error('Database Error:', error);
-        
-        // Handle Duplicate Entry Error specifically
         if (error.code === 'ER_DUP_ENTRY') {
-            return res.status(400).json({ error: 'DUPLICATE', message: 'You have already applied for this category.' });
+            return res.status(400).json({ status: 'error', message: 'You have already applied for this category.' });
         }
-        
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ status: 'error', message: error.message || 'Database error occurred' });
     }
 }

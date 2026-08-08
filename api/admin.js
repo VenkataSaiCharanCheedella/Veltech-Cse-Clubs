@@ -1,26 +1,48 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-// Create connection pool
-const pool = mysql.createPool({
-    uri: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: true },
-    connectionLimit: 10
-});
+let pool;
+function getPool() {
+    if (!pool) {
+        pool = mysql.createPool({
+            uri: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: true },
+            connectionLimit: 10
+        });
+    }
+    return pool;
+}
 
 module.exports = async function handler(req, res) {
-    // CORS headers for security and API access
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
+    }
+
+    if (req.method === 'GET') {
+        const action = req.query.action;
+        
+        if (action === 'getSettings') {
+            return res.status(200).json({ status: 'success', settings: { registration_status: 'OPEN' } });
+        }
+        
+        if (action === 'getRecent') {
+            try {
+                const db = getPool();
+                const [applications] = await db.execute(`SELECT * FROM applications ORDER BY timestamp DESC`);
+                return res.status(200).json({ status: 'success', data: applications });
+            } catch (err) {
+                console.error(err);
+                return res.status(500).json({ status: 'error', message: err.message });
+            }
+        }
+        
+        return res.status(200).json({ status: 'success', message: 'API is running' });
     }
 
     if (req.method !== 'POST') {
@@ -30,13 +52,11 @@ module.exports = async function handler(req, res) {
     try {
         let body = req.body;
         if (typeof body === 'string') {
-            body = JSON.parse(body);
+            try { body = JSON.parse(body); } catch(e){}
         }
 
         const { action, username, password } = body;
 
-        // Secure Server-Side Password Validation
-        // Set ADMIN_USER and ADMIN_PASS in your Vercel Environment Variables
         const validUser = process.env.ADMIN_USER || 'admin';
         const validPass = process.env.ADMIN_PASS || 'ChangeMe123!';
 
@@ -44,12 +64,14 @@ module.exports = async function handler(req, res) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
+        if (action === 'adminLogin') {
+            return res.status(200).json({ status: 'success', authenticated: true });
+        }
+
         if (action === 'getAdminData') {
-            // Fetch all applications
-            const [applications] = await pool.execute(`SELECT * FROM applications ORDER BY timestamp DESC`);
-            
-            // Fetch all contact queries
-            const [contactQueries] = await pool.execute(`SELECT * FROM contact_queries ORDER BY timestamp DESC`);
+            const db = getPool();
+            const [applications] = await db.execute(`SELECT * FROM applications ORDER BY timestamp DESC`);
+            const [contactQueries] = await db.execute(`SELECT * FROM contact_queries ORDER BY timestamp DESC`);
 
             return res.status(200).json({ 
                 status: 'success', 
@@ -61,9 +83,8 @@ module.exports = async function handler(req, res) {
         }
 
         return res.status(400).json({ error: 'Invalid Action' });
-
     } catch (error) {
         console.error('Database Error:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ status: 'error', message: error.message || 'Database error occurred' });
     }
 }

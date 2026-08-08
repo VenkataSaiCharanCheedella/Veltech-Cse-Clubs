@@ -79,7 +79,7 @@ function initLoginHandler() {
                 // Remote Google Apps Script Auth
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         action: 'adminLogin',
                         username: username,
@@ -156,7 +156,7 @@ async function updateRegistrationSettings(settingsPayload) {
         try {
             await fetch(API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     action: 'updateSettings',
                     settings: settingsPayload
