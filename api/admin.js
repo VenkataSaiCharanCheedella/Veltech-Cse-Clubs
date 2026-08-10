@@ -106,9 +106,8 @@ module.exports = async function handler(req, res) {
             const roles = body.roles;
             if (!roles) return res.status(400).json({ error: 'Missing roles data' });
             
-            // Start a transaction if needed, or just insert on duplicate key update
-            for (const [roleId, config] of Object.entries(roles)) {
-                await db.execute(`
+            const promises = Object.entries(roles).map(([roleId, config]) => {
+                return db.execute(`
                     INSERT INTO role_settings (role_id, is_closed, selected_name, selected_vtu) 
                     VALUES (?, ?, ?, ?)
                     ON DUPLICATE KEY UPDATE 
@@ -116,7 +115,8 @@ module.exports = async function handler(req, res) {
                         selected_name = VALUES(selected_name),
                         selected_vtu = VALUES(selected_vtu)
                 `, [roleId, config.is_closed ? 1 : 0, config.selected_name || null, config.selected_vtu || null]);
-            }
+            });
+            await Promise.all(promises);
             return res.status(200).json({ status: 'success', message: 'Settings saved' });
         }
 

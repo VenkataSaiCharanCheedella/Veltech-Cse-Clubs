@@ -96,6 +96,8 @@ function initLoginHandler() {
 
             if (authSuccess) {
                 sessionStorage.setItem('cse_council_admin_logged', 'true');
+                sessionStorage.setItem('cse_admin_u', username);
+                sessionStorage.setItem('cse_admin_p', password);
                 checkSessionAuth();
             } else {
                 loginError.classList.remove('hidden');
@@ -105,6 +107,8 @@ function initLoginHandler() {
             // Fallback check on network error
             if (username === DEFAULT_ADMIN_USER && password === DEFAULT_ADMIN_PASS) {
                 sessionStorage.setItem('cse_council_admin_logged', 'true');
+                sessionStorage.setItem('cse_admin_u', username);
+                sessionStorage.setItem('cse_admin_p', password);
                 checkSessionAuth();
             } else {
                 loginError.classList.remove('hidden');
@@ -583,8 +587,8 @@ document.getElementById('saveRolesBtn')?.addEventListener('click', async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 action: 'saveSettings',
-                username: document.getElementById('adminUsername').value.trim() || 'admin',
-                password: document.getElementById('adminPassword').value.trim() || 'ChangeMe123!',
+                username: document.getElementById('adminUsername')?.value.trim() || sessionStorage.getItem('cse_admin_u') || 'admin',
+                password: document.getElementById('adminPassword')?.value.trim() || sessionStorage.getItem('cse_admin_p') || 'ChangeMe123!',
                 roles: newRolesConfig
             })
         });
