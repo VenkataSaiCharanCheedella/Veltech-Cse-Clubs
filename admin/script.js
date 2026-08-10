@@ -187,7 +187,7 @@ async function fetchDashboardData() {
     if (API_URL && API_URL.trim() !== "") {
         try {
             const [settingsRes, recentRes] = await Promise.all([
-                fetch(`${API_URL}?action=getSettings`).then(r => r.json()),
+                fetch(`/api/submit?action=getSettings`).then(r => r.json()),
                 fetch(`${API_URL}?action=getRecent`).then(r => r.json())
             ]);
 
@@ -231,6 +231,10 @@ function renderMetricsAndAnalytics() {
     document.getElementById('metricTotalApps').textContent = totalApps;
     document.getElementById('metricLeadershipApps').textContent = leadershipApps;
     document.getElementById('metricClubApps').textContent = clubApps;
+
+    if (typeof renderRolesManagement === 'function') {
+        renderRolesManagement();
+    }
 
     // Render Club Breakdown Meters
     const clubCounts = {};
@@ -469,3 +473,133 @@ window.downloadClubData = function(clubName) {
     link.click();
     document.body.removeChild(link);
 };
+
+// --------------------------------------------------------------------------
+// 5. Role Management
+// --------------------------------------------------------------------------
+const LEADERSHIP_KEYS = ['vp', 'events-head', 'tech-head', 'media-head', 'doc-head'];
+
+function renderRolesManagement() {
+    const rolesConfig = adminSettings.roles || {};
+    
+    // Leadership Roles
+    const leadContainer = document.getElementById('leadershipRolesAdmin');
+    if (leadContainer) {
+        // Clear previous except header
+        const header = `
+            <strong>Role Name</strong>
+            <strong>Status (Open/Closed)</strong>
+            <strong>Selected Name (If closed)</strong>
+            <strong>Selected VTU (If closed)</strong>
+        `;
+        
+        let html = header;
+        LEADERSHIP_KEYS.forEach(role => {
+            const config = rolesConfig[role] || { is_closed: false, selected_name: '', selected_vtu: '' };
+            html += `
+                <div>${role.toUpperCase().replace('-', ' ')}</div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="close_${role}" ${config.is_closed ? 'checked' : ''}>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div>
+                    <input type="text" id="name_${role}" value="${config.selected_name || ''}" placeholder="Candidate Name" style="width:100%; padding: 0.3rem;">
+                </div>
+                <div>
+                    <input type="text" id="vtu_${role}" value="${config.selected_vtu || ''}" placeholder="Candidate VTU" style="width:100%; padding: 0.3rem;">
+                </div>
+            `;
+        });
+        leadContainer.innerHTML = html;
+    }
+
+    // Club Roles
+    const clubContainer = document.getElementById('clubRolesAdmin');
+    if (clubContainer) {
+        const header = `
+            <strong>Club Name</strong>
+            <strong>Club Head Status (Open/Closed)</strong>
+            <strong>Vice Head Status (Open/Closed)</strong>
+        `;
+        let html = header;
+        ALL_CLUBS_KEYS.forEach(club => {
+            const headKey = `${club}-head`;
+            const viceKey = `${club}-vice`;
+            const headClosed = rolesConfig[headKey]?.is_closed || false;
+            const viceClosed = rolesConfig[viceKey]?.is_closed || false;
+            
+            html += `
+                <div>${club}</div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="close_${headKey.replace(/\s/g, '_')}" ${headClosed ? 'checked' : ''}>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="close_${viceKey.replace(/\s/g, '_')}" ${viceClosed ? 'checked' : ''}>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            `;
+        });
+        clubContainer.innerHTML = html;
+    }
+}
+
+document.getElementById('saveRolesBtn')?.addEventListener('click', async () => {
+    const saveBtn = document.getElementById('saveRolesBtn');
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+
+    const newRolesConfig = {};
+    
+    // Collect Leadership
+    LEADERSHIP_KEYS.forEach(role => {
+        newRolesConfig[role] = {
+            is_closed: document.getElementById(`close_${role}`).checked,
+            selected_name: document.getElementById(`name_${role}`).value.trim(),
+            selected_vtu: document.getElementById(`vtu_${role}`).value.trim()
+        };
+    });
+
+    // Collect Clubs
+    ALL_CLUBS_KEYS.forEach(club => {
+        const headKey = `${club}-head`;
+        const viceKey = `${club}-vice`;
+        const headCheckbox = document.getElementById(`close_${headKey.replace(/\s/g, '_')}`);
+        const viceCheckbox = document.getElementById(`close_${viceKey.replace(/\s/g, '_')}`);
+        
+        newRolesConfig[headKey] = { is_closed: headCheckbox ? headCheckbox.checked : false };
+        newRolesConfig[viceKey] = { is_closed: viceCheckbox ? viceCheckbox.checked : false };
+    });
+
+    try {
+        const res = await fetch('/api/admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'saveSettings',
+                username: document.getElementById('adminUsername').value.trim() || 'admin',
+                password: document.getElementById('adminPassword').value.trim() || 'ChangeMe123!',
+                roles: newRolesConfig
+            })
+        });
+        
+        if (res.ok) {
+            alert('Roles configuration saved successfully!');
+            adminSettings.roles = newRolesConfig;
+        } else {
+            alert('Failed to save roles.');
+        }
+    } catch (e) {
+        console.error(e);
+        alert('Error saving roles configuration.');
+    } finally {
+        saveBtn.textContent = 'Save Roles Config';
+        saveBtn.disabled = false;
+    }
+});

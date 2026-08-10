@@ -28,7 +28,40 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
         const action = req.query.action;
         if (action === 'getSettings') {
-            return res.status(200).json({ status: 'success', settings: { registration_status: 'OPEN' } });
+            try {
+                const db = getPool();
+                // Ensure table exists
+                await db.execute(`
+                    CREATE TABLE IF NOT EXISTS role_settings (
+                        role_id VARCHAR(100) PRIMARY KEY,
+                        is_closed BOOLEAN DEFAULT FALSE,
+                        selected_name VARCHAR(255),
+                        selected_vtu VARCHAR(50)
+                    )
+                `);
+                const [rows] = await db.execute(`SELECT * FROM role_settings`);
+                
+                // Format settings map
+                const roleConfig = {};
+                rows.forEach(r => {
+                    roleConfig[r.role_id] = {
+                        is_closed: !!r.is_closed,
+                        selected_name: r.selected_name,
+                        selected_vtu: r.selected_vtu
+                    };
+                });
+                
+                return res.status(200).json({ 
+                    status: 'success', 
+                    settings: { 
+                        registration_status: 'OPEN',
+                        roles: roleConfig
+                    } 
+                });
+            } catch(e) {
+                console.error("Error fetching settings:", e);
+                return res.status(200).json({ status: 'success', settings: { registration_status: 'OPEN', roles: {} } });
+            }
         }
         return res.status(200).json({ status: 'success', message: 'API is running' });
     }

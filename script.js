@@ -606,6 +606,37 @@ function openApplicationModal(type, title) {
         clubForm.classList.remove('hidden');
         leadForm.classList.add('hidden');
 
+        // Apply club role settings
+        const headKey = `${title}-head`;
+        const viceKey = `${title}-vice`;
+        const headClosed = globalRoleSettings[headKey]?.is_closed;
+        const viceClosed = globalRoleSettings[viceKey]?.is_closed;
+        
+        const applySelect = document.getElementById('clubApplyingAs');
+        if (applySelect) {
+            Array.from(applySelect.options).forEach(opt => {
+                if (opt.value === 'Club Head') {
+                    if (headClosed) {
+                        opt.disabled = true;
+                        opt.textContent = 'Club Head - Applications Closed';
+                    } else {
+                        opt.disabled = false;
+                        opt.textContent = 'Club Head (2nd/3rd Year Only)';
+                    }
+                }
+                if (opt.value === 'Vice Head') {
+                    if (viceClosed) {
+                        opt.disabled = true;
+                        opt.textContent = 'Vice Head - Applications Closed';
+                    } else {
+                        opt.disabled = false;
+                        opt.textContent = 'Vice Head (2nd/3rd Year Only)';
+                    }
+                }
+            });
+            applySelect.value = ""; // reset selection
+        }
+
         triggerClubApplyingAsChange();
     }
 
@@ -914,18 +945,27 @@ function setupFourthYearValidation() {
                 <option value="Club Head">Club Head</option>
                 <option value="Vice Head">Vice Head</option>
             `;
+            // Trigger club name change to update disabled state
+            inputs.clubName.el.dispatchEvent(new Event('change'));
         } else if (type === 'Council Leadership') {
             clubContainer.classList.add('hidden');
             posSelect.disabled = false;
-            posSelect.innerHTML = `
-                <option value="">Select Position</option>
-                <option value="President">President</option>
-                <option value="Vice President">Vice President</option>
-                <option value="Events Head">Events Head</option>
-                <option value="Technical Head">Technical Head</option>
-                <option value="Social Media Head">Social Media Head</option>
-                <option value="Documentation Head">Documentation Head</option>
-            `;
+            
+            // Generate options dynamically based on leadership roles config
+            let optionsHtml = '<option value="">Select Position</option>';
+            
+            // Hardcoded President (not in LEADERSHIP_ROLES)
+            optionsHtml += `<option value="President">President</option>`;
+            
+            LEADERSHIP_ROLES.forEach(role => {
+                const isClosed = globalRoleSettings[role.id]?.is_closed;
+                if (isClosed) {
+                    optionsHtml += `<option value="${role.title}" disabled>${role.title} - Applications Closed</option>`;
+                } else {
+                    optionsHtml += `<option value="${role.title}">${role.title}</option>`;
+                }
+            });
+            posSelect.innerHTML = optionsHtml;
         } else {
             clubContainer.classList.add('hidden');
             posSelect.disabled = true;
@@ -938,6 +978,40 @@ function setupFourthYearValidation() {
         }
 
         validate();
+    });
+
+    inputs.clubName.el.addEventListener('change', (e) => {
+        if (inputs.appType.el.value === 'Club Leadership') {
+            const clubName = e.target.value;
+            const headKey = `${clubName}-head`;
+            const viceKey = `${clubName}-vice`;
+            const headClosed = globalRoleSettings[headKey]?.is_closed;
+            const viceClosed = globalRoleSettings[viceKey]?.is_closed;
+
+            const posSelect = document.getElementById('fyPosition');
+            Array.from(posSelect.options).forEach(opt => {
+                if (opt.value === 'Club Head') {
+                    if (headClosed) {
+                        opt.disabled = true;
+                        opt.textContent = 'Club Head - Applications Closed';
+                    } else {
+                        opt.disabled = false;
+                        opt.textContent = 'Club Head';
+                    }
+                }
+                if (opt.value === 'Vice Head') {
+                    if (viceClosed) {
+                        opt.disabled = true;
+                        opt.textContent = 'Vice Head - Applications Closed';
+                    } else {
+                        opt.disabled = false;
+                        opt.textContent = 'Vice Head';
+                    }
+                }
+            });
+            posSelect.value = ''; // reset selection
+            validate();
+        }
     });
 }
 
@@ -1251,4 +1325,54 @@ function showToast(message, type = 'info') {
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 300);
     }, 3800);
+}
+
+// --------------------------------------------------------------------------
+// Role Settings Integration
+// --------------------------------------------------------------------------
+let globalRoleSettings = {};
+
+(async function initRoleSettings() {
+    try {
+        const res = await fetch('/api/submit?action=getSettings');
+        const data = await res.json();
+        if (data && data.status === 'success' && data.settings) {
+            globalRoleSettings = data.settings.roles || {};
+            applyLeadershipSettings();
+        }
+    } catch(e) {
+        console.error("Failed to load role settings", e);
+    }
+})();
+
+function applyLeadershipSettings() {
+    if (!LEADERSHIP_ROLES) return;
+    LEADERSHIP_ROLES.forEach(role => {
+        const config = globalRoleSettings[role.id];
+        if (config && config.is_closed) {
+            const card = document.querySelector(`.role-card[data-id="${role.id}"]`);
+            if (card) {
+                card.classList.add('no-click');
+                card.style.cursor = 'default';
+                
+                const content = card.querySelector('.card-content');
+                const selectedName = config.selected_name || 'Selected Candidate';
+                const selectedVtu = config.selected_vtu || '';
+                
+                content.innerHTML = `
+                    <h4 class="card-title">${role.title}</h4>
+                    <div style="margin-top: 1.2rem;">
+                        <p style="margin:0; color: #ffffff; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.02em;">${selectedName}</p>
+                        <p style="margin:0; font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.4rem; font-weight: 600; letter-spacing: 0.05em;">${selectedVtu}</p>
+                        <div style="display: inline-block; margin-top: 1rem; color: #f87171; font-size: 0.85rem; font-weight: 600;">
+                            Applications Closed
+                        </div>
+                    </div>
+                `;
+                
+                const footer = card.querySelector('.card-footer');
+                if (footer) footer.style.display = 'none';
+            }
+        }
+    });
 }

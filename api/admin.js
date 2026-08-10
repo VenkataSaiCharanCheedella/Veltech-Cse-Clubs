@@ -72,14 +72,52 @@ module.exports = async function handler(req, res) {
             const db = getPool();
             const [applications] = await db.execute(`SELECT * FROM applications ORDER BY timestamp DESC`);
             const [contactQueries] = await db.execute(`SELECT * FROM contact_queries ORDER BY timestamp DESC`);
+            
+            // Ensure table exists
+            await db.execute(`
+                CREATE TABLE IF NOT EXISTS role_settings (
+                    role_id VARCHAR(100) PRIMARY KEY,
+                    is_closed BOOLEAN DEFAULT FALSE,
+                    selected_name VARCHAR(255),
+                    selected_vtu VARCHAR(50)
+                )
+            `);
+            const [roleRows] = await db.execute(`SELECT * FROM role_settings`);
+            const roleConfig = {};
+            roleRows.forEach(r => {
+                roleConfig[r.role_id] = {
+                    is_closed: !!r.is_closed,
+                    selected_name: r.selected_name,
+                    selected_vtu: r.selected_vtu
+                };
+            });
 
             return res.status(200).json({ 
                 status: 'success', 
                 data: {
                     applications: applications,
-                    contactQueries: contactQueries
+                    contactQueries: contactQueries,
+                    roles: roleConfig
                 }
             });
+        }
+        if (action === 'saveSettings') {
+            const db = getPool();
+            const roles = body.roles;
+            if (!roles) return res.status(400).json({ error: 'Missing roles data' });
+            
+            // Start a transaction if needed, or just insert on duplicate key update
+            for (const [roleId, config] of Object.entries(roles)) {
+                await db.execute(`
+                    INSERT INTO role_settings (role_id, is_closed, selected_name, selected_vtu) 
+                    VALUES (?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE 
+                        is_closed = VALUES(is_closed),
+                        selected_name = VALUES(selected_name),
+                        selected_vtu = VALUES(selected_vtu)
+                `, [roleId, config.is_closed ? 1 : 0, config.selected_name || null, config.selected_vtu || null]);
+            }
+            return res.status(200).json({ status: 'success', message: 'Settings saved' });
         }
 
         return res.status(400).json({ error: 'Invalid Action' });
