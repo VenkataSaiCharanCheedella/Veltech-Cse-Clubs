@@ -774,13 +774,28 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label for="fyReason">Why do you deserve a spot? <span class="required">*</span></label>
-                            <textarea id="fyReason" rows="4"
-                                placeholder="Briefly explain your past contributions, your ability to manage time with placements, and why we should make an exception for you."
-                                minlength="50" maxlength="600" required></textarea>
-                            <div class="char-counter"><span id="fyReasonCount">0</span>/600</div>
-                            <span class="field-error" id="fyReasonError">Please provide a valid reason (min 50
-                                chars).</span>
+                            <label for="fyPastContributions">What have been your past contributions to the club or department? <span class="required">*</span></label>
+                            <textarea id="fyPastContributions" rows="3"
+                                placeholder="Briefly explain your past contributions and involvement."
+                                minlength="50" maxlength="1000" required></textarea>
+                            <div class="char-counter"><span id="fyPastCount">0</span>/1000</div>
+                            <span class="field-error" id="fyPastError">Please provide a valid response (min 50 chars).</span>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="fyTimeManagement">How do you plan to manage time between club activities, academics, and placements? <span class="required">*</span></label>
+                            <textarea id="fyTimeManagement" rows="3"
+                                placeholder="Explain your ability to manage time effectively."
+                                minlength="50" maxlength="1000" required></textarea>
+                            <div class="char-counter"><span id="fyTimeCount">0</span>/1000</div>
+                            <span class="field-error" id="fyTimeError">Please provide a valid response (min 50 chars).</span>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="fyWhyException">Why should we make an exception for you in your 4th year? <span class="required">*</span></label>
+                            <textarea id="fyWhyException" rows="3"
+                                placeholder="Provide a compelling reason for this exception."
+                                minlength="50" maxlength="1000" required></textarea>
+                            <div class="char-counter"><span id="fyWhyCount">0</span>/1000</div>
+                            <span class="field-error" id="fyWhyError">Please provide a valid response (min 50 chars).</span>
                         </div>
                     </div>
 

@@ -688,7 +688,9 @@ function setupCharCounters() {
         { id: 'clubExperience', countId: 'clubExpCount' },
         { id: 'clubWhy', countId: 'clubWhyCount' },
         { id: 'clubContribute', countId: 'clubContributeCount' },
-        { id: 'fyReason', countId: 'fyReasonCount' },
+        { id: 'fyPastContributions', countId: 'fyPastCount' },
+        { id: 'fyTimeManagement', countId: 'fyTimeCount' },
+        { id: 'fyWhyException', countId: 'fyWhyCount' },
         { id: 'fycReason', countId: 'fycReasonCount' }
     ];
 
@@ -859,7 +861,9 @@ function setupFourthYearValidation() {
         position: { el: document.getElementById('fyPosition'), err: null, check: val => val !== '' },
         mentorName: { el: document.getElementById('fyMentorName'), err: document.getElementById('fyMentorNameError'), check: val => val.trim().length >= 2 },
         mentorPhone: { el: document.getElementById('fyMentorPhone'), err: document.getElementById('fyMentorPhoneError'), check: val => REGEX_PHONE.test(val.trim()) },
-        reason: { el: document.getElementById('fyReason'), err: document.getElementById('fyReasonError'), check: val => val.trim().length >= 50 },
+        past: { el: document.getElementById('fyPastContributions'), err: document.getElementById('fyPastError'), check: val => val.trim().length >= 50 },
+        time: { el: document.getElementById('fyTimeManagement'), err: document.getElementById('fyTimeError'), check: val => val.trim().length >= 50 },
+        why: { el: document.getElementById('fyWhyException'), err: document.getElementById('fyWhyError'), check: val => val.trim().length >= 50 },
         dec: { el: document.getElementById('fyDeclaration'), err: document.getElementById('fyDecError'), check: el => el.checked }
     };
 
@@ -1041,7 +1045,7 @@ function initFormSubmissions() {
             position: document.getElementById('fyPosition').value,
             mentorName: document.getElementById('fyMentorName').value.trim(),
             mentorPhone: document.getElementById('fyMentorPhone').value.trim(),
-            reason: document.getElementById('fyReason').value.trim()
+            reason: `Past Contributions:\n${document.getElementById('fyPastContributions').value.trim()}\n\nTime Management:\n${document.getElementById('fyTimeManagement').value.trim()}\n\nWhy Exception:\n${document.getElementById('fyWhyException').value.trim()}`
         };
 
         setSubmittingState(submitBtn, null, true);
