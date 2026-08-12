@@ -481,7 +481,7 @@ window.downloadClubData = function(clubName) {
 // --------------------------------------------------------------------------
 // 5. Role Management
 // --------------------------------------------------------------------------
-const LEADERSHIP_KEYS = ['vp', 'events-head', 'tech-head', 'media-head', 'doc-head'];
+const LEADERSHIP_KEYS = ['vp', 'events-head', 'tech-head', 'media-head', 'doc-head', 'doc-co-head'];
 
 function renderRolesManagement() {
     const rolesConfig = adminSettings.roles || {};

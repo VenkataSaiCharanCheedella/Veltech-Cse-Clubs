@@ -52,7 +52,7 @@ const LEADERSHIP_ROLES = [
     },
     {
         id: 'doc-head',
-        title: 'Documentation Head',
+        title: 'Documentation Head & Co-Head',
         icon: 'DH',
         desc: 'Manage official communications, event reports, council archives, and administrative records.',
         badge: 'Administrative Lead',
@@ -1356,7 +1356,7 @@ function applyLeadershipSettings() {
                 const statusText = hasCandidate ? 'Candidate Selected' : 'Applications Closed';
                 const statusColor = hasCandidate ? '#4ade80' : '#f87171';
                 
-                content.innerHTML = `
+                let innerHtml = `
                     <h4 class="card-title">${role.title}</h4>
                     <div style="margin-top: 1.2rem;">
                         <p style="margin:0; color: #ffffff; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.02em;">${selectedName}</p>
@@ -1366,6 +1366,34 @@ function applyLeadershipSettings() {
                         </div>
                     </div>
                 `;
+
+                if (role.id === 'doc-head' && globalRoleSettings['doc-co-head']) {
+                    const coConfig = globalRoleSettings['doc-co-head'];
+                    const coHasCandidate = coConfig.selected_name && coConfig.selected_name.trim().length > 0;
+                    const coSelectedName = coHasCandidate ? coConfig.selected_name : 'Selected Candidate';
+                    const coSelectedVtu = coConfig.selected_vtu || '';
+                    
+                    innerHtml = `
+                        <h4 class="card-title">${role.title}</h4>
+                        <div style="margin-top: 1.2rem;">
+                            <p style="margin:0; color: #93c5fd; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Head</p>
+                            <p style="margin:0; color: #ffffff; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.02em;">${selectedName}</p>
+                            <p style="margin:0; font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem; font-weight: 600; letter-spacing: 0.05em;">${selectedVtu}</p>
+                            
+                            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <p style="margin:0; color: #93c5fd; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Co-Head</p>
+                                <p style="margin:0; color: #ffffff; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.02em;">${coSelectedName}</p>
+                                <p style="margin:0; font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem; font-weight: 600; letter-spacing: 0.05em;">${coSelectedVtu}</p>
+                            </div>
+                            
+                            <div style="display: inline-block; margin-top: 1rem; color: ${statusColor}; font-size: 0.85rem; font-weight: 600;">
+                                ${statusText}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                content.innerHTML = innerHtml;
                 
                 const footer = card.querySelector('.card-footer');
                 if (footer) footer.style.display = 'none';
