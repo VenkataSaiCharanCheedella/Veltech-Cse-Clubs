@@ -1356,16 +1356,20 @@ function applyLeadershipSettings() {
                 card.style.cursor = 'default';
                 
                 const content = card.querySelector('.card-content');
-                const selectedName = config.selected_name || 'Selected Candidate';
+                const hasCandidate = config.selected_name && config.selected_name.trim().length > 0;
+                const selectedName = hasCandidate ? config.selected_name : 'Selected Candidate';
                 const selectedVtu = config.selected_vtu || '';
+                
+                const statusText = hasCandidate ? 'Candidate Selected' : 'Applications Closed';
+                const statusColor = hasCandidate ? '#4ade80' : '#f87171';
                 
                 content.innerHTML = `
                     <h4 class="card-title">${role.title}</h4>
                     <div style="margin-top: 1.2rem;">
                         <p style="margin:0; color: #ffffff; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.02em;">${selectedName}</p>
                         <p style="margin:0; font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.4rem; font-weight: 600; letter-spacing: 0.05em;">${selectedVtu}</p>
-                        <div style="display: inline-block; margin-top: 1rem; color: #f87171; font-size: 0.85rem; font-weight: 600;">
-                            Applications Closed
+                        <div style="display: inline-block; margin-top: 1rem; color: ${statusColor}; font-size: 0.85rem; font-weight: 600;">
+                            ${statusText}
                         </div>
                     </div>
                 `;
