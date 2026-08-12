@@ -154,9 +154,9 @@ const CLUBS_LIST = [
         id: 'short-film-club',
         title: 'Short Film & Movie Appreciation Club',
         icon: 'SFC',
-        desc: 'Short and documentary film competitions, movie reviews, and cinematic insights.',
+        desc: 'A creative club focused on acting, making short films, and producing short web series.',
         category: 'Creative',
-        details: 'The film appreciation club trains individuals to review films, Ted Talks, and short films with detailed insight. Members write video reviews and brief cinematic explanations, while organizing film competitions annually.'
+        details: 'This club is dedicated to all aspects of filmmaking and cinematic content creation. Responsibilities include making short films, producing short web series, acting, and collaborating on various creative video projects.'
     }
 ];
 
