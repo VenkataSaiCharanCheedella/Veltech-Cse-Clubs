@@ -814,6 +814,10 @@ h1, h2, h3, h4, h5, h6 {
         box-shadow 0.45s ease, background 0.45s ease;
 }
 
+.role-card.no-click {
+    justify-content: center;
+}
+
 .role-card::before {
     content: '';
     position: absolute;
