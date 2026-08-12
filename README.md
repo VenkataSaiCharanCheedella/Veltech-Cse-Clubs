@@ -8,7 +8,7 @@ Official recruitment portal for the **CSE Clubs Council**, featuring a modern da
 
 - **Modern Premium UI**: Built with pure HTML5, CSS3, Vanilla JS, dark theme glassmorphism, glowing blue accents, and responsive layout.
 - **Mandatory Instructions Modal**: Displays 11 recruitment guidelines on first load, locking portal interaction until accepted by the applicant.
-- **Dynamic Card Dashboard**: 5 Leadership Roles (Vice President, Events Head, Technical Head, Social Media Head, Documentation Head) and 11 Clubs (Coding, Innovation, CyberSentinel, Animatrix, Magazine, Fusion & Fashion, Nature, Yoga, AspireX, AppNova, VelSecure Cybersecurity).
+- **Dynamic Card Dashboard**: 5 Leadership Roles (Vice President, Events Head, Technical Head, Social Media Head, Documentation Head) and 10 Clubs (Coding, Innovation, CyberSentinel, Animatrix, Magazine, Fusion & Fashion, Nature, Yoga, AspireX, AppNova).
 - **Interactive Forms & Real-time Validation**: Validates VTU Number (e.g. `1VT21CS001`), email, 10-digit phone, academic year eligibility, and character counters.
 - **WhatsApp Channel Integration**: Direct callout for applicants to join the official CSE Council WhatsApp Channel (`https://whatsapp.com/channel/0029VbDBib02phHQ142idH1V`) during and after application.
 - **Live Registration Countdown & Controls**: Controlled dynamically from Google Sheets (`OPEN` / `CLOSED` toggle & scheduled close timer).

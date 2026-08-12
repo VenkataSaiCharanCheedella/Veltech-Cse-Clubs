@@ -142,14 +142,7 @@ const CLUBS_LIST = [
         category: 'Tech',
         details: 'Explore how to design new web and mobile applications while developing technical knowledge, imagination, and product-thinking skills.'
     },
-    {
-        id: 'velsecure-club',
-        title: 'VelSecure Cybersecurity Club',
-        icon: 'VSC',
-        desc: 'Advanced vulnerability assessment, cloud security, cryptography, and red-teaming labs.',
-        category: 'Security',
-        details: 'Promote internet safety and a secure online environment while training members in cyber and information-security skills to protect people from cybercrime.'
-    },
+
     {
         id: 'short-film-club',
         title: 'Short Film & Movie Appreciation Club',
