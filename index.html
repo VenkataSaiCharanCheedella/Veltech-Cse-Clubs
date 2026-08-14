@@ -203,7 +203,7 @@
                         <span class="field-error" id="contactVtuError">Enter a valid 5-digit VTU No.</span>
                     </div>
 
-                    <div class="form-group full-width">
+                    <div class="form-group">
                         <label for="contactYear">Year <span class="required">*</span></label>
                         <select id="contactYear" required>
                             <option value="">Select Year</option>
@@ -212,6 +212,12 @@
                             <option value="3rd Year">3rd Year</option>
                             <option value="4th Year">4th Year</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactPhone">Mobile Number <span class="required">*</span></label>
+                        <input type="tel" id="contactPhone" placeholder="10-digit mobile number" maxlength="10" required>
+                        <span class="field-error" id="contactPhoneError">Enter a valid 10-digit number</span>
                     </div>
 
                     <div class="form-group full-width">
@@ -359,9 +365,9 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label for="leadEmail">VTU Mail <span class="required">*</span></label>
-                            <input type="email" id="leadEmail" placeholder="vtu12345@veltech.edu.in" required>
-                            <span class="field-error" id="leadEmailError">Enter a valid VTU mail address</span>
+                            <label for="leadEmail">Email Address <span class="required">*</span></label>
+                            <input type="email" id="leadEmail" placeholder="vtu12345@veltech.edu.in or personal email" required>
+                            <span class="field-error" id="leadEmailError">Enter a valid email address</span>
                         </div>
 
                         <div class="form-group full-width">
@@ -520,9 +526,9 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label for="clubEmail">VTU Mail <span class="required">*</span></label>
-                            <input type="email" id="clubEmail" placeholder="vtu12345@veltech.edu.in" required>
-                            <span class="field-error" id="clubEmailError">Enter a valid VTU mail address</span>
+                            <label for="clubEmail">Email Address <span class="required">*</span></label>
+                            <input type="email" id="clubEmail" placeholder="vtu12345@veltech.edu.in or personal email" required>
+                            <span class="field-error" id="clubEmailError">Enter a valid email address</span>
                         </div>
 
                         <div class="form-group full-width club-leadership-only">
@@ -750,7 +756,7 @@
 
                         <div class="form-group">
                             <label for="fyEmail">Email ID <span class="required">*</span></label>
-                            <input type="email" id="fyEmail" placeholder="vtu12345@veltech.edu.in" required>
+                            <input type="email" id="fyEmail" placeholder="vtu12345@veltech.edu.in or personal email" required>
                             <span class="field-error" id="fyEmailError">Enter a valid email address</span>
                         </div>
 

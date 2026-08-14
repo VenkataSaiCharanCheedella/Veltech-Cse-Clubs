@@ -91,9 +91,10 @@ module.exports = async function handler(req, res) {
         if (action === 'submitApplication') {
             const db = getPool();
             if (data.category === 'ContactQuery') {
+                const queryText = data.phone ? `[Phone: ${data.phone}]\n${data.query}` : data.query;
                 await db.execute(
                     `INSERT INTO contact_queries (name, vtu, year, query) VALUES (?, ?, ?, ?)`,
-                    [data.name || null, data.vtu || null, data.year || null, data.query || null]
+                    [data.name || null, data.vtu || null, data.year || null, queryText || null]
                 );
                 return res.status(200).json({ status: 'success', message: 'Query submitted successfully' });
             } else {

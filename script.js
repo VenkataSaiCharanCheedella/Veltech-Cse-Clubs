@@ -1016,6 +1016,7 @@ function setupContactValidation() {
         name: { el: document.getElementById('contactName'), err: document.getElementById('contactNameError'), check: val => val.trim().length >= 3 },
         vtu: { el: document.getElementById('contactVtu'), err: document.getElementById('contactVtuError'), check: val => REGEX_REGISTRATION_NUMBER.test(val.trim()) },
         year: { el: document.getElementById('contactYear'), err: null, check: val => val !== '' },
+        phone: { el: document.getElementById('contactPhone'), err: document.getElementById('contactPhoneError'), check: val => REGEX_PHONE.test(val.trim()) },
         query: { el: document.getElementById('contactQuery'), err: document.getElementById('contactQueryError'), check: val => val.trim().length >= 10 }
     };
 
@@ -1066,6 +1067,7 @@ function initFormSubmissions() {
             name: document.getElementById('contactName').value.trim(),
             vtu: document.getElementById('contactVtu').value.trim(),
             year: document.getElementById('contactYear').value,
+            phone: document.getElementById('contactPhone').value.trim(),
             query: document.getElementById('contactQuery').value.trim()
         };
 
