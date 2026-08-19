@@ -43,18 +43,24 @@ module.exports = async function handler(req, res) {
                 
                 // Format settings map
                 const roleConfig = {};
+                let registrationStatus = 'OPEN';
+                
                 rows.forEach(r => {
-                    roleConfig[r.role_id] = {
-                        is_closed: !!r.is_closed,
-                        selected_name: r.selected_name,
-                        selected_vtu: r.selected_vtu
-                    };
+                    if (r.role_id === 'GLOBAL_STATUS') {
+                        registrationStatus = r.selected_name || 'OPEN';
+                    } else {
+                        roleConfig[r.role_id] = {
+                            is_closed: !!r.is_closed,
+                            selected_name: r.selected_name,
+                            selected_vtu: r.selected_vtu
+                        };
+                    }
                 });
                 
                 return res.status(200).json({ 
                     status: 'success', 
                     settings: { 
-                        registration_status: 'OPEN',
+                        registration_status: registrationStatus,
                         roles: roleConfig
                     } 
                 });

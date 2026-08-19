@@ -1799,3 +1799,58 @@ h1, h2, h3, h4, h5, h6 {
     .hero-title { font-size: 1.8rem; }
     .timer-box { min-width: 50px; padding: 0.4rem; }
 }
+/* --- Timer Styles --- */
+.timer-container {
+    margin: 2rem auto;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    max-width: 400px;
+}
+
+.timer-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.timer-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-box span {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.time-box small {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.25rem;
+}
+
+.timer-display .colon {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-top: -1.25rem;
+}
