@@ -1327,31 +1327,6 @@ function showToast(message, type = 'info') {
 // --------------------------------------------------------------------------
 let globalRoleSettings = {};
 let globalRegistrationStatus = 'OPEN';
-const CLOSING_TIME = new Date('2026-08-19T18:00:00+05:30').getTime();
-
-function updateTimer() {
-    const now = new Date().getTime();
-    const distance = CLOSING_TIME - now;
-
-    if (distance <= 0 || globalRegistrationStatus === 'CLOSED') {
-        document.getElementById('t-hours').innerText = '00';
-        document.getElementById('t-minutes').innerText = '00';
-        document.getElementById('t-seconds').innerText = '00';
-        document.getElementById('registration-timer-container').style.display = 'block';
-        document.querySelector('.timer-label').innerText = 'Registrations Closed';
-        closeAllRegistrations();
-        return;
-    }
-
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById('t-hours').innerText = hours.toString().padStart(2, '0');
-    document.getElementById('t-minutes').innerText = minutes.toString().padStart(2, '0');
-    document.getElementById('t-seconds').innerText = seconds.toString().padStart(2, '0');
-    document.getElementById('registration-timer-container').style.display = 'block';
-}
 
 function closeAllRegistrations() {
     document.querySelectorAll('.card, .role-card').forEach(card => {
@@ -1380,9 +1355,9 @@ function closeAllRegistrations() {
         console.error("Failed to load role settings", e);
     }
     
-    // Start timer after loading settings
-    setInterval(updateTimer, 1000);
-    updateTimer();
+    if (globalRegistrationStatus === 'CLOSED') {
+        closeAllRegistrations();
+    }
 })();
 
 function applyLeadershipSettings() {
