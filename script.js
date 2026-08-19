@@ -620,6 +620,18 @@ function updateClubYearOptions(applyingAs) {
 }
 
 function openApplicationModal(type, title) {
+    if (globalRegistrationStatus === 'CLOSED') {
+        const item = (type === 'leadership') 
+            ? LEADERSHIP_ROLES.find(r => r.title === title)
+            : CLUBS_LIST.find(c => c.title === title);
+        
+        if (item) {
+            closeClubDetails(); // in case it was opened from the club details modal
+            openContactHeadsModal(item, type === 'leadership');
+        }
+        return;
+    }
+
     if (!isRegistrationOpen) {
         showToast('Registrations are currently closed.', 'error');
         return;
