@@ -178,10 +178,10 @@ async function updateRegistrationSettings(settingsPayload) {
 }
 
 function updateAdminStatusDisplay() {
-    const statusText = adminSettings.registration_status || 'OPEN';
-    document.getElementById('metricActiveStatus').textContent = statusText;
-    document.getElementById('regStatusToggle').checked = (statusText === 'OPEN');
-    document.getElementById('statusToggleLabel').innerHTML = `Status: <strong>${statusText}</strong>`;
+    const statusText = 'CLOSED (Backend Enforced)';
+    document.getElementById('metricActiveStatus').textContent = 'CLOSED';
+    document.getElementById('regStatusToggle').checked = false;
+    document.getElementById('statusToggleLabel').innerHTML = `Status: <strong style="color: var(--accent-danger);">${statusText}</strong>`;
 }
 
 // --------------------------------------------------------------------------

@@ -472,7 +472,7 @@ function openContactHeadsModal(item, isRole) {
     document.body.style.overflow = 'hidden';
 }
 
-document.querySelector('#contactHeadsModal .close-modal').addEventListener('click', () => {
+document.querySelector('#contactHeadsModal .close-modal-btn').addEventListener('click', () => {
     document.getElementById('contactHeadsModal').classList.add('hidden');
     document.body.style.overflow = '';
 });
@@ -1421,11 +1421,13 @@ function closeAllRegistrations() {
         const data = await res.json();
         if (data && data.status === 'success' && data.settings) {
             globalRoleSettings = data.settings.roles || {};
-            globalRegistrationStatus = data.settings.registration_status || 'OPEN';
+            // FORCE REGISTRATIONS CLOSED REGARDLESS OF BACKEND
+            globalRegistrationStatus = 'CLOSED'; 
             applyLeadershipSettings();
         }
     } catch(e) {
         console.error("Failed to load role settings", e);
+        globalRegistrationStatus = 'CLOSED';
     }
     
     if (globalRegistrationStatus === 'CLOSED') {
