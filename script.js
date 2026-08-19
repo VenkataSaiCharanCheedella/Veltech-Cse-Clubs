@@ -468,18 +468,18 @@ function openContactHeadsModal(item, isRole) {
         }
     }
     
-    document.getElementById('contactHeadsModal').classList.add('active');
+    document.getElementById('contactHeadsModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 }
 
 document.querySelector('#contactHeadsModal .close-modal').addEventListener('click', () => {
-    document.getElementById('contactHeadsModal').classList.remove('active');
+    document.getElementById('contactHeadsModal').classList.add('hidden');
     document.body.style.overflow = '';
 });
 
 document.getElementById('contactHeadsModal').addEventListener('click', (event) => {
     if (event.target === document.getElementById('contactHeadsModal')) {
-        document.getElementById('contactHeadsModal').classList.remove('active');
+        document.getElementById('contactHeadsModal').classList.add('hidden');
         document.body.style.overflow = '';
     }
 });
