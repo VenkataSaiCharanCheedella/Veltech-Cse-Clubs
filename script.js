@@ -161,6 +161,20 @@ let countdownTimerInterval = null;
 let currentActiveRoleType = null; // 'leadership' or 'club'
 let currentActiveRoleName = null;
 
+const CLUB_HEADS_DATA = {
+    "Coding Club": { head: "Navaneeth kumar (28034) - 8919438814", viceHead: "Sureesha P (30767) - 6381488324" },
+    "Innovation Club": { head: "Prathesh Kumar V (27431) - 9710894953", viceHead: "Bhuvaneshwaran V (27980) - 8778058528" },
+    "CyberSentinel Club": { head: "Abhinav Rajesh (35348) - 8056021108", viceHead: "B. GOUTHAM (28491) - 6381455883" },
+    "Animatrix Club": { head: "Kishore S (27445) - 8056036686 (E-Sports) / SINGAVARAPU PARDHU NARASIMHA SAI BALAJI (33524) - 7995626426 (Animatrix)", viceHead: "CHINTAPALLI G V S S P N SUJITH (33563) - 7989053781" },
+    "Magazine Club": { head: "Rupa Sri.V (29462) - 9959372121", viceHead: "Aliyah Zaineb (31711) - 8438900440" },
+    "Fusion & Fashion Club": { head: "kollepara Y N Jyothi Lakshmi Praneetha (27682) - 79890 57127", viceHead: "Pabbisettysaisitamahalakshmi (28307) - 9676197280" },
+    "Nature Club": { head: "Rakshana (30743) - 9361114999", viceHead: "Kunte Shashidhar Rao (28428) - 7075875413" },
+    "Yoga Club": { head: "Vanka Arun Jyothi (31959) - 8093494869", viceHead: "Kanala Akhila (32188) - 9014607417" },
+    "AspireX Club": { head: "THUDAMALADINNE JAYAPRAKASH (28024) - 8247015945", viceHead: "LOGITH (34393) - 81481 13734" },
+    "AppNova Club": { head: "Mannuru Hasmitha (29897) - 9573129601", viceHead: "Sashank lekkala (31590) - 8555845125" },
+    "Short Film & Movie Appreciation Club": { head: "Bhanu teja (27978) - 7382741639", viceHead: "Akshay (29801) - 7673913535" }
+};
+
 // Regex Patterns for Validation
 const REGEX_REGISTRATION_NUMBER = /^\d{5}$/;
 const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -401,6 +415,11 @@ function initClubDetailsModal() {
 }
 
 function openClubDetails(item, isRole = false) {
+    if (globalRegistrationStatus === 'CLOSED') {
+        openContactHeadsModal(item, isRole);
+        return;
+    }
+
     document.getElementById('clubDetailsTitle').textContent = item.title;
     document.getElementById('clubDetailsCategory').textContent = item.category || item.badge;
     document.getElementById('clubDetailsDescription').innerHTML = item.details;
@@ -422,6 +441,48 @@ function closeClubDetails() {
     document.getElementById('clubDetailsModal').classList.add('hidden');
     document.body.style.overflow = '';
 }
+
+function openContactHeadsModal(item, isRole) {
+    document.getElementById('contactHeadsTitle').textContent = isRole ? 'Leadership Contact Details' : item.title + ' Contact Details';
+    
+    const contentDiv = document.getElementById('contactHeadsContent');
+    contentDiv.innerHTML = '';
+    
+    if (isRole) {
+        contentDiv.innerHTML = `<p style="color: var(--text-primary);">For inquiries regarding Council Leadership positions, please contact the existing Council President or Faculty Advisors directly.</p>`;
+    } else {
+        const data = CLUB_HEADS_DATA[item.title];
+        if (data) {
+            contentDiv.innerHTML = `
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.1rem;">Club Head</h4>
+                    <p style="color: #fff; font-weight: 500; font-size: 1rem; line-height: 1.6;">${data.head}</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="color: var(--accent-secondary); margin-bottom: 0.5rem; font-size: 1.1rem;">Vice Head</h4>
+                    <p style="color: #fff; font-weight: 500; font-size: 1rem; line-height: 1.6;">${data.viceHead}</p>
+                </div>
+            `;
+        } else {
+             contentDiv.innerHTML = `<p style="color: var(--text-primary);">Contact details not available for this club.</p>`;
+        }
+    }
+    
+    document.getElementById('contactHeadsModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+document.querySelector('#contactHeadsModal .close-modal').addEventListener('click', () => {
+    document.getElementById('contactHeadsModal').classList.remove('active');
+    document.body.style.overflow = '';
+});
+
+document.getElementById('contactHeadsModal').addEventListener('click', (event) => {
+    if (event.target === document.getElementById('contactHeadsModal')) {
+        document.getElementById('contactHeadsModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
 
 // --------------------------------------------------------------------------
 // 9. Search and Category Filter Logic
@@ -1330,14 +1391,14 @@ let globalRegistrationStatus = 'OPEN';
 
 function closeAllRegistrations() {
     document.querySelectorAll('.card, .role-card').forEach(card => {
-        card.classList.add('no-click');
-        card.style.cursor = 'default';
+        // card.classList.add('no-click');
+        // card.style.cursor = 'default';
         const applyBtn = card.querySelector('.btn, .apply-btn');
         if (applyBtn) {
-            applyBtn.innerText = 'CLOSED';
+            applyBtn.innerText = 'Contact Heads';
             applyBtn.style.background = 'var(--surface-light)';
             applyBtn.style.color = 'var(--text-secondary)';
-            applyBtn.style.pointerEvents = 'none';
+            // applyBtn.style.pointerEvents = 'none';
         }
     });
 }
