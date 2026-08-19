@@ -172,7 +172,7 @@ const CLUB_HEADS_DATA = {
     "Yoga Club": { head: "Vanka Arun Jyothi (31959) - 8093494869", viceHead: "Kanala Akhila (32188) - 9014607417" },
     "AspireX Club": { head: "THUDAMALADINNE JAYAPRAKASH (28024) - 8247015945", viceHead: "LOGITH (34393) - 81481 13734" },
     "AppNova Club": { head: "Mannuru Hasmitha (29897) - 9573129601", viceHead: "Sashank lekkala (31590) - 8555845125" },
-    "Short Film & Movie Appreciation Club": { head: "Bhanu teja (27978) - 7382741639", viceHead: "Akshay (29801) - 7673913535" }
+    "Short Film & Movie Appreciation Club": { head: "Bhanu teja (27978) - 9347916929", viceHead: "Akshay (29801) - 7673913535" }
 };
 
 // Regex Patterns for Validation
@@ -444,10 +444,10 @@ function closeClubDetails() {
 
 function openContactHeadsModal(item, isRole) {
     document.getElementById('contactHeadsTitle').textContent = isRole ? 'Leadership Contact Details' : item.title + ' Contact Details';
-    
+
     const contentDiv = document.getElementById('contactHeadsContent');
     contentDiv.innerHTML = '';
-    
+
     if (isRole) {
         contentDiv.innerHTML = `<p style="color: var(--text-primary);">For inquiries regarding Council Leadership positions, please contact the existing Council President or Faculty Advisors directly.</p>`;
     } else {
@@ -464,10 +464,10 @@ function openContactHeadsModal(item, isRole) {
                 </div>
             `;
         } else {
-             contentDiv.innerHTML = `<p style="color: var(--text-primary);">Contact details not available for this club.</p>`;
+            contentDiv.innerHTML = `<p style="color: var(--text-primary);">Contact details not available for this club.</p>`;
         }
     }
-    
+
     document.getElementById('contactHeadsModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 }
@@ -621,10 +621,10 @@ function updateClubYearOptions(applyingAs) {
 
 function openApplicationModal(type, title) {
     if (globalRegistrationStatus === 'CLOSED') {
-        const item = (type === 'leadership') 
+        const item = (type === 'leadership')
             ? LEADERSHIP_ROLES.find(r => r.title === title)
             : CLUBS_LIST.find(c => c.title === title);
-        
+
         if (item) {
             closeClubDetails(); // in case it was opened from the club details modal
             openContactHeadsModal(item, type === 'leadership');
@@ -658,7 +658,7 @@ function openApplicationModal(type, title) {
 
         const clubObj = CLUBS_LIST.find(c => c.title === title);
         const isNonTech = clubObj && ['Wellness', 'Social', 'Cultural', 'Creative', 'Media'].includes(clubObj.category);
-        
+
         const skillsEl = document.getElementById('clubSkills');
         const expEl = document.getElementById('clubExperience');
         if (isNonTech) {
@@ -677,7 +677,7 @@ function openApplicationModal(type, title) {
         const viceKey = `${title}-vice`;
         const headClosed = globalRoleSettings[headKey]?.is_closed;
         const viceClosed = globalRoleSettings[viceKey]?.is_closed;
-        
+
         const applySelect = document.getElementById('clubApplyingAs');
         if (applySelect) {
             Array.from(applySelect.options).forEach(opt => {
@@ -1016,13 +1016,13 @@ function setupFourthYearValidation() {
         } else if (type === 'Council Leadership') {
             clubContainer.classList.add('hidden');
             posSelect.disabled = false;
-            
+
             // Generate options dynamically based on leadership roles config
             let optionsHtml = '<option value="">Select Position</option>';
-            
+
             // Hardcoded President (not in LEADERSHIP_ROLES)
             optionsHtml += `<option value="President">President</option>`;
-            
+
             LEADERSHIP_ROLES.forEach(role => {
                 const isClosed = globalRoleSettings[role.id]?.is_closed;
                 if (isClosed) {
@@ -1422,14 +1422,14 @@ function closeAllRegistrations() {
         if (data && data.status === 'success' && data.settings) {
             globalRoleSettings = data.settings.roles || {};
             // FORCE REGISTRATIONS CLOSED REGARDLESS OF BACKEND
-            globalRegistrationStatus = 'CLOSED'; 
+            globalRegistrationStatus = 'CLOSED';
             applyLeadershipSettings();
         }
-    } catch(e) {
+    } catch (e) {
         console.error("Failed to load role settings", e);
         globalRegistrationStatus = 'CLOSED';
     }
-    
+
     if (globalRegistrationStatus === 'CLOSED') {
         closeAllRegistrations();
     }
@@ -1444,15 +1444,15 @@ function applyLeadershipSettings() {
             if (card) {
                 card.classList.add('no-click');
                 card.style.cursor = 'default';
-                
+
                 const content = card.querySelector('.card-content');
                 const hasCandidate = config.selected_name && config.selected_name.trim().length > 0;
                 const selectedName = hasCandidate ? config.selected_name : 'Selected Candidate';
                 const selectedVtu = config.selected_vtu || '';
-                
+
                 const statusText = hasCandidate ? 'Candidate Selected' : 'Applications Closed';
                 const statusColor = hasCandidate ? '#4ade80' : '#f87171';
-                
+
                 let innerHtml = `
                     <h4 class="card-title">${role.title}</h4>
                     <div style="margin-top: 1.2rem;">
@@ -1469,7 +1469,7 @@ function applyLeadershipSettings() {
                     const coHasCandidate = coConfig.selected_name && coConfig.selected_name.trim().length > 0;
                     const coSelectedName = coHasCandidate ? coConfig.selected_name : 'Selected Candidate';
                     const coSelectedVtu = coConfig.selected_vtu || '';
-                    
+
                     innerHtml = `
                         <h4 class="card-title">${role.title}</h4>
                         <div style="margin-top: 1.2rem;">
@@ -1491,7 +1491,7 @@ function applyLeadershipSettings() {
                 }
 
                 content.innerHTML = innerHtml;
-                
+
                 const footer = card.querySelector('.card-footer');
                 if (footer) footer.style.display = 'none';
             }
